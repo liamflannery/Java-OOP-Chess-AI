@@ -6,14 +6,14 @@ public class AgentBehaviour : MonoBehaviour
 {
      
     public static int initial_decisiveness = 500;
+    public static int initial_lifeLength = 5000;
     // ATTRIBUTES
     public int visionLength = 10;
-    public int decisiveness = initial_decisiveness;
+    private int decisiveness = initial_decisiveness;
+    public int lifeLength;
 
 
 
-    
-    
     private Direction dir1, dir2, dir3, dir4, dir5, dir6, dir7, dir8;
     Direction currentDir;
     List<Direction> directions = new List<Direction>();
@@ -41,6 +41,7 @@ public class AgentBehaviour : MonoBehaviour
         directions.Add(dir6);
         //directions.Add(dir7);
         //directions.Add(dir8);
+        lifeLength = initial_lifeLength;
 
         foreach (Direction d in directions)
         {
@@ -57,6 +58,12 @@ public class AgentBehaviour : MonoBehaviour
         {
             d.CalledUpDate(transform.position);
         }
+
+        if(lifeLength <= 0)
+        {
+            Destroy(gameObject);
+        }
+        lifeLength -= 1;
         if(decisiveness == 0)
         {
             currentDir = pickDirection();
@@ -71,9 +78,19 @@ public class AgentBehaviour : MonoBehaviour
 
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Food")
+        {
+            lifeLength += initial_lifeLength;
+            Destroy(collision.gameObject);
+        }
+    }
+
     public void updateWeight(int index, int newWeight)
     {
         weights.Insert(index, newWeight);
+       
     }
 
     public Direction pickDirection()
