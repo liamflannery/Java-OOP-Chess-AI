@@ -1,47 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[System.Serializable]
 public class AgentBehaviour : MonoBehaviour
 {
      
-    public static int initial_decisiveness = 500;
-    public static int initial_lifeLength = 5000;
+    public float initial_decisiveness = 5;
+   
     // ATTRIBUTES
-    public int visionLength = 10;
-    private int decisiveness = initial_decisiveness;
-    public int lifeLength;
+    public float visionLength = 10;
+    public float decisiveness;
+    public float energy;
+    public int dirCount;
+    public float speed = 5;
 
 
-
-    private Direction dir1, dir2, dir3, dir4, dir5, dir6, dir7, dir8;
     Direction currentDir;
     List<Direction> directions = new List<Direction>();
     List<int> weights = new List<int>();
 
-
+  
+  
     // Start is called before the first frame update
     void Start()
     {
-        dir1 = new Direction(new Vector3(1, 0, 0), 0, visionLength, this);
-        dir2 = new Direction(new Vector3(1, 0, 1), 1, visionLength, this);
-        dir3 = new Direction(new Vector3(1, 0, -1), 2, visionLength, this);
-        dir4 = new Direction(new Vector3(-1, 0, 0), 3, visionLength, this);
-        dir5 = new Direction(new Vector3(-1, 0, 1), 4, visionLength, this);
-        dir6 = new Direction(new Vector3(-1, 0, -1), 5, visionLength, this);
-        dir7 = new Direction(new Vector3(0, 0, 1), 6, visionLength, this);
-        dir8 = new Direction(new Vector3(0, 0, -1), 7, visionLength, this);
-      
+        speed = Mathf.Abs(speed + Random.Range(-1.0f, 1.0f));
+        initial_decisiveness = Mathf.Abs(initial_decisiveness + Random.Range(-1.0f, 1.0f));
+        visionLength = Mathf.Abs(visionLength + Random.Range(-1.0f, 1.0f));
+        decisiveness = initial_decisiveness;
+        dirCount = dirCount + Random.Range(-2, 2);
+        if(dirCount <= 1)
+        {
+            dirCount = 1;
+        }
+        float scale = Random.Range(0.9f, 1.1f);
+        gameObject.transform.localScale = gameObject.transform.localScale * scale;
+        gameObject.GetComponent<Rigidbody>().mass *= scale;
 
-        directions.Add(dir1);
-        directions.Add(dir2);
-        directions.Add(dir3);
-        directions.Add(dir4);
-        directions.Add(dir5);
-        directions.Add(dir6);
-        //directions.Add(dir7);
-        //directions.Add(dir8);
-        lifeLength = initial_lifeLength;
+        Vector3 directionValue = new Vector3(1, 0, 0);
+        int rotateDegrees = 360 / dirCount;
+        
+        for (int i = 0; i < dirCount; i++)
+        {
+            directions.Add(new Direction(directionValue, i, visionLength, this));
+            directionValue = Quaternion.Euler(0, rotateDegrees, 0) * directionValue;
+        }
+     
+        
 
         foreach (Direction d in directions)
         {
@@ -52,6 +57,7 @@ public class AgentBehaviour : MonoBehaviour
     }
 
     // Update is called once per frame
+    float timeElapsed = 0f;
     void Update()
     {
         foreach(Direction d in directions)
@@ -59,20 +65,29 @@ public class AgentBehaviour : MonoBehaviour
             d.CalledUpDate(transform.position);
         }
 
-        if(lifeLength <= 0)
+        if(energy <= 0)
         {
             Destroy(gameObject);
         }
-        lifeLength -= 1;
-        if(decisiveness == 0)
+        timeElapsed += Time.deltaTime;
+        if(timeElapsed >= 1f)
+        {
+            energy -= 1;
+            timeElapsed = timeElapsed % 1f;
+            decisiveness -= 1;
+        }
+       
+        if(decisiveness <= 0)
         {
             currentDir = pickDirection();
             decisiveness = initial_decisiveness;
         }
-        decisiveness -= 1;
+        
+
+        
         
         Debug.DrawRay(transform.position, transform.TransformDirection(currentDir.getDir()) * visionLength, Color.red);
-        transform.Translate(currentDir.getDir() * Time.deltaTime);
+        transform.Translate(currentDir.getDir() * Time.deltaTime * speed * 0.5f);
 
 
 
@@ -82,9 +97,10 @@ public class AgentBehaviour : MonoBehaviour
     {
         if(collision.gameObject.tag == "Food")
         {
-            lifeLength += initial_lifeLength;
+            energy += 10;
             Destroy(collision.gameObject);
-        }
+            Instantiate(gameObject);
+        } 
     }
 
     public void updateWeight(int index, int newWeight)
@@ -105,7 +121,7 @@ public class AgentBehaviour : MonoBehaviour
                 distWeights.Add(d.getIndex());
             }
         }
-        Debug.Log(distWeights.Count);
+
         int selectIndex = distWeights[Random.Range(0, distWeights.Count - 1)];
         
         return directions[selectIndex];

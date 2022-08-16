@@ -8,9 +8,9 @@ public class Direction
     public int weight;
     public int index;
    
-    private int visionLength;
+    private float visionLength;
     private AgentBehaviour agentBehaviour;
-    public Direction(Vector3 dir, int index, int inVisionLength, AgentBehaviour inAgentBehaviour)
+    public Direction(Vector3 dir, int index, float inVisionLength, AgentBehaviour inAgentBehaviour)
     {
         this.direction = dir;
         this.index = index;

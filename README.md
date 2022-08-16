@@ -12,3 +12,16 @@ Made progress on prototype
 - Added movement directions
 - Did research into weighted random selections (for adding value to movement direction)
 - Updated aesthetics of prototype
+
+Week 4:
+Clean up code for more understandable and simple rules
+https://www.youtube.com/watch?v=UNNKfNqr4kc
+
+- Lose 1 energy every second
+- Start with 10 energy
+- If 0 energy, die
+- If 30 energy - reproduce 
+- Eat food for 1 energy
+- Reproduction -> change size and speed by random amount (+/- 1_
+
+
