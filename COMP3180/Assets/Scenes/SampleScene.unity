@@ -857,7 +857,9 @@ MonoBehaviour:
   agent: {fileID: 5187555245125825260, guid: db7847858d51a674fa735f371d95af1b, type: 3}
   startingAgents: 20
   foodSpawnRate: 1
-  initialFood: 50
+  initialFood: 200
+  timeScale: 1
+  CurrentAgentCount: 0
 --- !u!4 &2119030558
 Transform:
   m_ObjectHideFlags: 0

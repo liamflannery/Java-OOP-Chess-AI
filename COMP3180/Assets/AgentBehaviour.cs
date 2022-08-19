@@ -72,7 +72,7 @@ public class AgentBehaviour : MonoBehaviour
         timeElapsed += Time.deltaTime;
         if(timeElapsed >= 1f)
         {
-            energy -= 1;
+            energy -= 1 * gameObject.transform.localScale.x; ;
             timeElapsed = timeElapsed % 1f;
             decisiveness -= 1;
         }

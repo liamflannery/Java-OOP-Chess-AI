@@ -11,14 +11,19 @@ public class GameController : MonoBehaviour
     public int startingAgents;
     public float foodSpawnRate;
     public int initialFood;
+    public float timeScale = 1.0f;
+    private float fixedDeltaTime;
+    public int CurrentAgentCount;
     Vector3 randomPosition = new Vector3();
     void Start()
     {
-        for (int i = 0; i < startingAgents; i++){
+        this.fixedDeltaTime = Time.fixedDeltaTime;
+        for (int i = 0; i < startingAgents; i++)
+        {
             randomPosition = GetARandomPos(plane);
             Instantiate(agent, randomPosition, Quaternion.identity);
         }
-        for(int j = 0; j < initialFood; j++)
+        for (int j = 0; j < initialFood; j++)
         {
             randomPosition = GetARandomPos(plane);
             Instantiate(food, randomPosition, Quaternion.identity);
@@ -27,10 +32,19 @@ public class GameController : MonoBehaviour
 
     // Update is called once per frame
     float timeElapsed = 0f;
-    
+
     void Update()
     {
+
+        Time.timeScale = timeScale;
+        Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
         timeElapsed += Time.deltaTime;
+
+        CurrentAgentCount = GameObject.FindGameObjectsWithTag("Agent").Length;
+        if (CurrentAgentCount == 1)
+        {
+            timeScale = 0;
+        }
         if (timeElapsed >= foodSpawnRate)
         {
             randomPosition = GetARandomPos(plane);
@@ -45,11 +59,11 @@ public class GameController : MonoBehaviour
         Mesh planeMesh = plane.GetComponent<MeshFilter>().mesh;
         Bounds bounds = planeMesh.bounds;
 
-        float minX = plane.transform.position.x - plane.transform.localScale.x * bounds.size.x * 0.9f;
-        float minZ = plane.transform.position.z - plane.transform.localScale.z * bounds.size.z * 0.9f;
+        float minX = plane.transform.position.x - plane.transform.localScale.x * bounds.size.x * 0.5f;
+        float minZ = plane.transform.position.z - plane.transform.localScale.z * bounds.size.z * 0.5f;
 
         Vector3 newVec = new Vector3(Random.Range(minX, -minX),
-                                     plane.transform.position.y + 4,
+                                     plane.transform.position.y + 2,
                                      Random.Range(minZ, -minZ));
         return newVec;
     }
