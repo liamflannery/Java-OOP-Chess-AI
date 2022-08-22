@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5187555245125825258}
   m_Layer: 0
   m_Name: Agent
-  m_TagString: Untagged
+  m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,12 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771d0457676daec4bb252529091ea5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initial_decisiveness: 5
-  visionLength: 20
-  decisiveness: 0
+  visionLength: 10
   energy: 20
-  dirCount: 8
-  speed: 3
+  speed: 5
+  target: {x: 0, y: 0, z: 0}
 --- !u!54 &5187555245125825258
 Rigidbody:
   m_ObjectHideFlags: 0

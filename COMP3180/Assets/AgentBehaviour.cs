@@ -4,66 +4,74 @@ using UnityEngine;
 [System.Serializable]
 public class AgentBehaviour : MonoBehaviour
 {
-     
-    public float initial_decisiveness = 5;
-   
+
+
     // ATTRIBUTES
-    public float visionLength = 10;
-    public float decisiveness;
-    public float energy;
-    public int dirCount;
+    [SerializeField]
+    private float visionLength = 10;
+    [SerializeField]
+    public float energy = 20;
+    [SerializeField]
     public float speed = 5;
-
-
-    Direction currentDir;
-    List<Direction> directions = new List<Direction>();
-    List<int> weights = new List<int>();
+    bool foundTarget = false;
+    [SerializeField]
+    bool prey;
 
   
   
     // Start is called before the first frame update
     void Start()
     {
+
+        energy = 20;
+
         speed = Mathf.Abs(speed + Random.Range(-1.0f, 1.0f));
-        initial_decisiveness = Mathf.Abs(initial_decisiveness + Random.Range(-1.0f, 1.0f));
         visionLength = Mathf.Abs(visionLength + Random.Range(-1.0f, 1.0f));
-        decisiveness = initial_decisiveness;
-        dirCount = dirCount + Random.Range(-2, 2);
-        if(dirCount <= 1)
-        {
-            dirCount = 1;
-        }
+    
         float scale = Random.Range(0.9f, 1.1f);
         gameObject.transform.localScale = gameObject.transform.localScale * scale;
         gameObject.GetComponent<Rigidbody>().mass *= scale;
 
-        Vector3 directionValue = new Vector3(1, 0, 0);
-        int rotateDegrees = 360 / dirCount;
-        
-        for (int i = 0; i < dirCount; i++)
+        if(gameObject.transform.localScale.x > 3)
         {
-            directions.Add(new Direction(directionValue, i, visionLength, this));
-            directionValue = Quaternion.Euler(0, rotateDegrees, 0) * directionValue;
+            prey = false;
         }
-     
-        
-
-        foreach (Direction d in directions)
+        if (prey)
         {
-            weights.Insert(d.getIndex(), d.getWeight());
+            gameObject.GetComponent<Renderer>().material.color = Color.red;
         }
-
-        currentDir = directions[Random.Range(0, directions.Count)];
+        else
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.blue;
+        }
     }
 
     // Update is called once per frame
     float timeElapsed = 0f;
+    Collider[] hitColliders;
+    public Vector3 target;
+    
     void Update()
     {
-        foreach(Direction d in directions)
+        
+
+        hitColliders = Physics.OverlapSphere(transform.position, visionLength);
+
+        if(foundTarget == false)
         {
-            d.CalledUpDate(transform.position);
+            Looking();
         }
+        if(Vector3.Distance(transform.position, target) < 1)
+        {
+            foundTarget = false;
+        }
+      
+        var step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, target, step);
+        
+        
+        
+
 
         if(energy <= 0)
         {
@@ -74,20 +82,16 @@ public class AgentBehaviour : MonoBehaviour
         {
             energy -= 1 * gameObject.transform.localScale.x; ;
             timeElapsed = timeElapsed % 1f;
-            decisiveness -= 1;
+        }
+
+        if(energy > 25)
+        {
+            energy -= 5;
+            Instantiate(gameObject, GetARandomPos(), transform.rotation);
         }
        
-        if(decisiveness <= 0)
-        {
-            currentDir = pickDirection();
-            decisiveness = initial_decisiveness;
-        }
-        
+     
 
-        
-        
-        Debug.DrawRay(transform.position, transform.TransformDirection(currentDir.getDir()) * visionLength, Color.red);
-        transform.Translate(currentDir.getDir() * Time.deltaTime * speed * 0.5f);
 
 
 
@@ -98,32 +102,85 @@ public class AgentBehaviour : MonoBehaviour
         if(collision.gameObject.tag == "Food")
         {
             energy += 10;
+            foundTarget = false;
             Destroy(collision.gameObject);
-            Instantiate(gameObject);
+            
         } 
+        if(collision.gameObject.tag == "Wall")
+        {
+            target = GetARandomPos();
+        }
+    
     }
 
-    public void updateWeight(int index, int newWeight)
+    void OnCollisionStay(Collision collision)
     {
-        weights.Insert(index, newWeight);
+        if ((collision.gameObject.tag == "Agent") && (collision.gameObject != this.gameObject) && (collision.gameObject.transform.localScale.x < transform.localScale.x) && (prey = false))
+        {
+            Debug.Log("ATTACK");
+            energy += 20;
+            Destroy(collision.gameObject);
+
+        }
+        
+    }
+
+    
+
+    
+    void Looking()
+    {
+        Collider currentNearest = null;
+        float closestDistance = 100;
+        float currentDistance;
+
+        foreach (Collider collider in hitColliders)
+        {
+            if(collider.gameObject != this.gameObject)
+            {
+                if (collider.gameObject.tag == "Food" || (prey == false && collider.gameObject.tag == "Agent" && collider.gameObject.transform.localScale.x <= 2))
+                {
+                    currentDistance = Vector3.Distance(transform.position, collider.gameObject.transform.position);
+                    if (currentDistance < closestDistance)
+                    {
+                        currentNearest = collider;
+                        closestDistance = currentDistance;
+                    }
+                }
+            }
+           
+        }
+        if (currentNearest)
+        {
+            foundTarget = true;
+            target = currentNearest.gameObject.transform.position;
+        }
+        else if(transform.position == target || target == Vector3.zero)
+        {
+            target = GetARandomPos();
+        }
        
     }
 
-    public Direction pickDirection()
-    {
-        List<int> distWeights = new List<int>();
-        int currentWeight = 0;
-        foreach(Direction d in directions)
-        {
-            currentWeight = d.getWeight();
-            for(int i = 0; i <= currentWeight; i++)
-            {
-                distWeights.Add(d.getIndex());
-            }
-        }
 
-        int selectIndex = distWeights[Random.Range(0, distWeights.Count - 1)];
-        
-        return directions[selectIndex];
+    public Vector3 GetARandomPos()
+    {
+        GameObject plane = GameObject.Find("Plane");
+        Mesh planeMesh = plane.GetComponent<MeshFilter>().mesh;
+        Bounds bounds = planeMesh.bounds;
+
+        float minX = plane.transform.position.x - plane.transform.localScale.x * bounds.size.x * 0.5f;
+        float minZ = plane.transform.position.z - plane.transform.localScale.z * bounds.size.z * 0.5f;
+
+        Vector3 newVec = new Vector3(Random.Range(minX, -minX),
+                                     plane.transform.position.y + 2,
+                                     Random.Range(minZ, -minZ));
+        return newVec;
     }
+
+
+
+
+
+
 }

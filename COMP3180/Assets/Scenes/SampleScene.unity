@@ -155,7 +155,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1254238457}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!65 &143468912
 BoxCollider:
@@ -311,12 +311,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647406128}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.596555, y: -2.5, z: 0.11657}
-  m_LocalScale: {x: 5.658519, y: 5.658519, z: 5.658519}
+  m_LocalPosition: {x: -0.9248, y: 8.2, z: -0.2514}
+  m_LocalScale: {x: 6.6312437, y: 6.4462366, z: 6.5364842}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1254238457}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -489,7 +489,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.35914826, y: 0.6105266, z: -0.36174634, w: 0.60614306}
-  m_LocalPosition: {x: -67.8, y: 120.4, z: 0.1}
+  m_LocalPosition: {x: -37.3, y: 70.8, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -528,7 +528,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1254238457}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1102893854
 BoxCollider:
@@ -618,16 +618,15 @@ Transform:
   m_GameObject: {fileID: 1254238456}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.360195, y: 10.58, z: -0.10445714}
-  m_LocalScale: {x: 1.983765, y: 1.983765, z: 1.983765}
+  m_LocalScale: {x: 1.1952301, y: 1.1952301, z: 1.1952301}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 647406132}
   - {fileID: 1815324462}
   - {fileID: 1102893853}
   - {fileID: 143468911}
   - {fileID: 1940062549}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1815324458
 GameObject:
@@ -724,7 +723,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1254238457}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1940062548
 GameObject:
@@ -758,7 +757,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1254238457}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!65 &1940062550
 BoxCollider:
@@ -857,7 +856,7 @@ MonoBehaviour:
   agent: {fileID: 5187555245125825260, guid: db7847858d51a674fa735f371d95af1b, type: 3}
   startingAgents: 20
   foodSpawnRate: 1
-  initialFood: 200
+  initialFood: 20
   timeScale: 1
   CurrentAgentCount: 0
 --- !u!4 &2119030558
@@ -873,5 +872,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

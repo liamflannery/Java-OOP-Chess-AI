@@ -38,14 +38,14 @@ public class GameController : MonoBehaviour
 
         Time.timeScale = timeScale;
         Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
-        timeElapsed += Time.deltaTime;
+        timeElapsed += Time.deltaTime * foodSpawnRate;
 
         CurrentAgentCount = GameObject.FindGameObjectsWithTag("Agent").Length;
-        if (CurrentAgentCount == 1)
-        {
-            timeScale = 0;
-        }
-        if (timeElapsed >= foodSpawnRate)
+    //    if (CurrentAgentCount == 1)
+    //    {
+    //        timeScale = 0;
+    //    }
+        if (timeElapsed >= 1)
         {
             randomPosition = GetARandomPos(plane);
             Instantiate(food, randomPosition, Quaternion.identity);
