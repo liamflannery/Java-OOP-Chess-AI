@@ -116,7 +116,6 @@ MonoBehaviour:
   energy: 20
   speed: 5
   prey: 0
-  target: {x: 0, y: 0, z: 0}
 --- !u!54 &5187555245125825258
 Rigidbody:
   m_ObjectHideFlags: 0

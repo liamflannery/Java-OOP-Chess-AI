@@ -18,93 +18,36 @@ public class AgentBehaviour : MonoBehaviour
     [SerializeField]
     bool prey;
     NavMeshAgent navMeshAgent;
+    LayerMask mask;
   
   
     // Start is called before the first frame update
     void Start()
     {
-
-        energy = 20;
-
-        speed = Mathf.Abs(speed + Random.Range(-1.0f, 1.0f));
-        visionLength = Mathf.Abs(visionLength + Random.Range(-1.0f, 1.0f));
-    
-        float scale = Random.Range(0.9f, 1.1f);
-        gameObject.transform.localScale = gameObject.transform.localScale * scale;
-        gameObject.GetComponent<Rigidbody>().mass *= scale;
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        if (gameObject.transform.localScale.x > 3)
-        {
-            prey = false;
-        }
-        if (prey)
-        {
-            gameObject.GetComponent<Renderer>().material.color = Color.blue ;
-        }
-        else
-        {
-            gameObject.GetComponent<Renderer>().material.color = Color.red;
-        }
+        RandomiseGenes();
+        mask = LayerMask.GetMask("Food");
     }
 
     // Update is called once per frame
     float timeElapsed = 0f;
     Collider[] hitColliders;
-    public Vector3 target;
-    Vector3 currentTarget;
+    /*navMeshAgent.SetDestination(target);
+            currentTarget = target;*/
+    
+  
     void Update()
     {
-        
 
-        hitColliders = Physics.OverlapSphere(transform.position, visionLength);
+        //HandleEnergy();
 
-        if(foundTarget == false)
-        {
-            Looking();
-        }
-        if(Vector3.Distance(transform.position, target) < 1)
-        {
-            foundTarget = false;
-        }
-        
-        if(currentTarget != target)
-        {
-            navMeshAgent.SetDestination(target);
-            currentTarget = target;
-        }
-        var step = speed * Time.deltaTime;
+        HandleMovement();
 
-        //transform.position = Vector3.MoveTowards(transform.position, target, step);
-        
-        
-        
-
-
-        if(energy <= 0)
-        {
-            Destroy(gameObject);
-        }
-        timeElapsed += Time.deltaTime;
-        if(timeElapsed >= 1f)
-        {
-            energy -= 1 * gameObject.transform.localScale.x; ;
-            timeElapsed = timeElapsed % 1f;
-        }
-
-        if(energy > 25)
-        {
-            energy -= 5;
-            Instantiate(gameObject, GetARandomPos(), transform.rotation);
-        }
-       
-     
-
-
+        //hitColliders = Physics.OverlapSphere(transform.position, visionLength);
 
 
     }
 
-    void OnCollisionEnter(Collision collision)
+   /* void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Food")
         {
@@ -130,12 +73,12 @@ public class AgentBehaviour : MonoBehaviour
 
         }
         
-    }
+    }*/
 
     
 
     
-    void Looking()
+    /*void Looking()
     {
         Collider currentNearest = null;
         float closestDistance = 100;
@@ -167,9 +110,85 @@ public class AgentBehaviour : MonoBehaviour
             target = GetARandomPos();
         }
        
+    }*/
+
+    void RandomiseGenes()
+    {
+        energy = 20;
+
+        speed = Mathf.Abs(speed + Random.Range(-1.0f, 1.0f));
+        visionLength = Mathf.Abs(visionLength + Random.Range(-1.0f, 1.0f));
+
+        float scale = Random.Range(0.9f, 1.1f);
+        gameObject.transform.localScale = gameObject.transform.localScale * scale;
+        gameObject.GetComponent<Rigidbody>().mass *= scale;
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        if (gameObject.transform.localScale.x > 3)
+        {
+            prey = false;
+        }
+        if (prey)
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.blue;
+        }
+        else
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.red;
+        }
+    }
+    void HandleEnergy()
+    {
+        if (energy <= 0)
+        {
+            Destroy(gameObject);
+        }
+        timeElapsed += Time.deltaTime;
+        if (timeElapsed >= 1f)
+        {
+            energy -= 1 * gameObject.transform.localScale.x; ;
+            timeElapsed = timeElapsed % 1f;
+        }
+
+        if (energy > 25)
+        {
+            energy -= 5;
+            Instantiate(gameObject, GetARandomPos(), transform.rotation);
+        }
     }
 
-
+    GameObject actualTarget;
+    Vector3 randomPos;
+    Vector3 target;
+    void HandleMovement()
+    {
+        navMeshAgent.SetDestination(target);
+        if (actualTarget)
+        {
+            target = actualTarget.transform.position;
+        }
+        else
+        {
+            Patrol();
+        }
+    }
+    void Patrol()
+    {
+        hitColliders = Physics.OverlapSphere(transform.position, visionLength, mask);
+        float closestDistance = Mathf.Infinity;
+        GameObject closestObject = null;
+        float currentDistance;
+        foreach (Collider collider in hitColliders)
+        {
+            currentDistance = Vector3.Distance(collider.gameObject.transform.position, transform.position);
+            if(currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                closestObject.GetComponent<Renderer>().material.color = Color.yellow;
+                closestObject = collider.gameObject;
+            }
+        }
+        closestObject.GetComponent<Renderer>().material.color = Color.blue;
+    }
     public Vector3 GetARandomPos()
     {
         GameObject plane = GameObject.Find("Plane");
