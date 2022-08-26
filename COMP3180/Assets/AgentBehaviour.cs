@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 [System.Serializable]
 public class AgentBehaviour : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class AgentBehaviour : MonoBehaviour
     bool foundTarget = false;
     [SerializeField]
     bool prey;
-
+    NavMeshAgent navMeshAgent;
   
   
     // Start is called before the first frame update
@@ -31,18 +32,18 @@ public class AgentBehaviour : MonoBehaviour
         float scale = Random.Range(0.9f, 1.1f);
         gameObject.transform.localScale = gameObject.transform.localScale * scale;
         gameObject.GetComponent<Rigidbody>().mass *= scale;
-
-        if(gameObject.transform.localScale.x > 3)
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        if (gameObject.transform.localScale.x > 3)
         {
             prey = false;
         }
         if (prey)
         {
-            gameObject.GetComponent<Renderer>().material.color = Color.red;
+            gameObject.GetComponent<Renderer>().material.color = Color.blue ;
         }
         else
         {
-            gameObject.GetComponent<Renderer>().material.color = Color.blue;
+            gameObject.GetComponent<Renderer>().material.color = Color.red;
         }
     }
 
@@ -50,7 +51,7 @@ public class AgentBehaviour : MonoBehaviour
     float timeElapsed = 0f;
     Collider[] hitColliders;
     public Vector3 target;
-    
+    Vector3 currentTarget;
     void Update()
     {
         
@@ -65,9 +66,15 @@ public class AgentBehaviour : MonoBehaviour
         {
             foundTarget = false;
         }
-      
+        
+        if(currentTarget != target)
+        {
+            navMeshAgent.SetDestination(target);
+            currentTarget = target;
+        }
         var step = speed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, target, step);
+
+        //transform.position = Vector3.MoveTowards(transform.position, target, step);
         
         
         
