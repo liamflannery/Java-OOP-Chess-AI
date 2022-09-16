@@ -59,8 +59,8 @@ public class GameController : MonoBehaviour
         Mesh planeMesh = plane.GetComponent<MeshFilter>().mesh;
         Bounds bounds = planeMesh.bounds;
 
-        float minX = plane.transform.position.x - plane.transform.localScale.x * bounds.size.x * 0.5f;
-        float minZ = plane.transform.position.z - plane.transform.localScale.z * bounds.size.z * 0.5f;
+        float minX = plane.transform.position.x - plane.transform.localScale.x * bounds.size.x * 0.4f;
+        float minZ = plane.transform.position.z - plane.transform.localScale.z * bounds.size.z * 0.3f;
 
         Vector3 newVec = new Vector3(Random.Range(minX, -minX),
                                      plane.transform.position.y + 2,

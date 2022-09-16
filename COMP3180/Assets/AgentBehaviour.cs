@@ -9,9 +9,9 @@ public class AgentBehaviour : MonoBehaviour
 
     // ATTRIBUTES
     [SerializeField]
-    private float visionLength = 10;
+    private float visionLength = 5;
     [SerializeField]
-    public float energy = 20;
+    public float energy = 10;
     [SerializeField]
     public float speed = 5;
     bool foundTarget = false;
@@ -19,12 +19,13 @@ public class AgentBehaviour : MonoBehaviour
     bool prey;
     NavMeshAgent navMeshAgent;
     LayerMask mask;
-  
-  
+
+
     // Start is called before the first frame update
     void Start()
     {
         RandomiseGenes();
+        
         mask = LayerMask.GetMask("Food");
     }
 
@@ -38,16 +39,17 @@ public class AgentBehaviour : MonoBehaviour
     void Update()
     {
 
-        //HandleEnergy();
+
+        HandleEnergy();
 
         HandleMovement();
-
+        //Patrol();
         //hitColliders = Physics.OverlapSphere(transform.position, visionLength);
 
 
     }
 
-   /* void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Food")
         {
@@ -58,22 +60,22 @@ public class AgentBehaviour : MonoBehaviour
         } 
         if(collision.gameObject.tag == "Wall")
         {
-            target = GetARandomPos();
+            //target = GetARandomPos();
         }
     
     }
 
     void OnCollisionStay(Collision collision)
     {
-        if ((collision.gameObject.tag == "Agent") && (collision.gameObject != this.gameObject) && (collision.gameObject.transform.localScale.x < transform.localScale.x) && (prey = false))
+        /*if ((collision.gameObject.tag == "Agent") && (collision.gameObject != this.gameObject) && (collision.gameObject.transform.localScale.x < transform.localScale.x) && (prey = false))
         {
             Debug.Log("ATTACK");
             energy += 20;
             Destroy(collision.gameObject);
 
-        }
+        }*/
         
-    }*/
+    }
 
     
 
@@ -122,19 +124,11 @@ public class AgentBehaviour : MonoBehaviour
         float scale = Random.Range(0.9f, 1.1f);
         gameObject.transform.localScale = gameObject.transform.localScale * scale;
         gameObject.GetComponent<Rigidbody>().mass *= scale;
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        if (gameObject.transform.localScale.x > 3)
-        {
-            prey = false;
-        }
-        if (prey)
-        {
-            gameObject.GetComponent<Renderer>().material.color = Color.blue;
-        }
-        else
-        {
-            gameObject.GetComponent<Renderer>().material.color = Color.red;
-        }
+        navMeshAgent = this.gameObject.GetComponent<NavMeshAgent>();
+        
+        navMeshAgent.speed = speed;
+        
+        
     }
     void HandleEnergy()
     {
@@ -145,7 +139,7 @@ public class AgentBehaviour : MonoBehaviour
         timeElapsed += Time.deltaTime;
         if (timeElapsed >= 1f)
         {
-            energy -= 1 * gameObject.transform.localScale.x; ;
+            energy -= 1.2f * gameObject.transform.localScale.x; ;
             timeElapsed = timeElapsed % 1f;
         }
 
@@ -158,36 +152,49 @@ public class AgentBehaviour : MonoBehaviour
 
     GameObject actualTarget;
     Vector3 randomPos;
-    Vector3 target;
+    GameObject target;
     void HandleMovement()
     {
-        navMeshAgent.SetDestination(target);
-        if (actualTarget)
+        if (target != null)
         {
-            target = actualTarget.transform.position;
+            navMeshAgent.SetDestination(target.transform.position);
         }
         else
         {
+            if (GetComponent<Rigidbody>().velocity.magnitude == 0)
+            {
+                navMeshAgent.SetDestination(GetARandomPos());
+                
+            }
             Patrol();
         }
+        
+        
+        
     }
     void Patrol()
     {
-        hitColliders = Physics.OverlapSphere(transform.position, visionLength, mask);
+        hitColliders = Physics.OverlapSphere(transform.position, visionLength);
         float closestDistance = Mathf.Infinity;
         GameObject closestObject = null;
         float currentDistance;
+        
         foreach (Collider collider in hitColliders)
         {
-            currentDistance = Vector3.Distance(collider.gameObject.transform.position, transform.position);
-            if(currentDistance < closestDistance)
+            if (collider.gameObject.tag == "Food")
             {
-                closestDistance = currentDistance;
-                closestObject.GetComponent<Renderer>().material.color = Color.yellow;
-                closestObject = collider.gameObject;
+                currentDistance = Vector3.Distance(collider.gameObject.transform.position, transform.position);
+                if (currentDistance < closestDistance)
+                {
+                    closestDistance = currentDistance;
+                    closestObject = collider.gameObject;
+                }
             }
         }
-        closestObject.GetComponent<Renderer>().material.color = Color.blue;
+        Debug.Log(target);
+        target = closestObject;
+        
+
     }
     public Vector3 GetARandomPos()
     {
