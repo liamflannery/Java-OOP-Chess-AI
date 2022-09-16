@@ -1,3 +1,15 @@
+# Natural Selection Simulation Project
+
+![Screen Shot 2022-09-16 at 4 19 17 pm](https://user-images.githubusercontent.com/55472933/190570052-a0e75861-6969-4b49-aeed-0cf3f282c7b7.png)
+
+
+## Task Log
+https://important-alloy-399.notion.site/2f406529a57148b08a61292ddc4f1df2?v=534e69491ee64df4a594894cd399e458
+
+
+
+## Journal
+
 Week 2:
 Game theory based AI simulations
 
