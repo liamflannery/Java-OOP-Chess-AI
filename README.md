@@ -36,4 +36,6 @@ SOURCE 6 - My prototype
 
 Also worked on different algorithms for pathfinding 
 
+Week 6/7 - Worked on report and presentation 
+
 
