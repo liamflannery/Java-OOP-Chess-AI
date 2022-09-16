@@ -1,6 +1,7 @@
 # Natural Selection Simulation Project
 
-![Screen Shot 2022-09-16 at 4 19 17 pm](https://user-images.githubusercontent.com/55472933/190570052-a0e75861-6969-4b49-aeed-0cf3f282c7b7.png)
+![Screen Shot 2022-09-16 at 4 19 17 pm](https://user-images.githubusercontent.com/55472933/190570859-e0104ccb-b1b0-4145-b595-e4b0461d730d.png)
+
 
 
 ## Task Log
