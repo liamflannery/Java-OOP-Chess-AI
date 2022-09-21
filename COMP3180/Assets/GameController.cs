@@ -14,10 +14,13 @@ public class GameController : MonoBehaviour
     public float timeScale = 0f;
     private float fixedDeltaTime;
     public int CurrentAgentCount;
+    private ClickHandler agentUI;
+    private Camera camera;
     
     Vector3 randomPosition = new Vector3();
     void Start()
     {
+        camera = Camera.main;
         this.fixedDeltaTime = Time.fixedDeltaTime;
         for (int i = 0; i < startingAgents; i++)
         {
@@ -29,6 +32,7 @@ public class GameController : MonoBehaviour
             randomPosition = GetARandomPos(plane);
             Instantiate(food, randomPosition, Quaternion.identity);
         }
+        agentUI = GameObject.Find("AgentUI").GetComponent<ClickHandler>();
     }
 
     // Update is called once per frame
@@ -36,7 +40,7 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-
+        
         Time.timeScale = timeScale;
         Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
         timeElapsed += Time.deltaTime * foodSpawnRate;
@@ -51,6 +55,30 @@ public class GameController : MonoBehaviour
             randomPosition = GetARandomPos(plane);
             Instantiate(food, randomPosition, Quaternion.identity);
             timeElapsed = timeElapsed % 1f;
+        }
+    }
+
+    GameObject currentAgent;
+    void OnGUI()
+    {
+        Vector3 point = new Vector3();
+        Event   currentEvent = Event.current;
+        Vector2 mousePos = new Vector2();
+        
+     
+       
+        mousePos.x = currentEvent.mousePosition.x;
+        mousePos.y = camera.pixelHeight - currentEvent.mousePosition.y;
+
+        point = camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, camera.nearClipPlane + 3));
+
+        if(agentUI.getClicked()){
+            currentAgent = Instantiate(agent);
+            agentUI.resetClicked();
+        // agent.transform.position;
+        }
+        if(currentAgent){
+            currentAgent.transform.position = point;
         }
     }
 
