@@ -36,7 +36,7 @@ public class Direction
     public void updateWeight(int newWeight)
     {
         weight = newWeight;
-        agentBehaviour.updateWeight(index, weight);
+
     }
     // Start is called before the first frame update
     void Start()
