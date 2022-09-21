@@ -11,9 +11,10 @@ public class GameController : MonoBehaviour
     public int startingAgents;
     public float foodSpawnRate;
     public int initialFood;
-    public float timeScale = 1.0f;
+    public float timeScale = 0f;
     private float fixedDeltaTime;
     public int CurrentAgentCount;
+    
     Vector3 randomPosition = new Vector3();
     void Start()
     {

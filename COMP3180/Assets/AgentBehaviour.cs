@@ -9,6 +9,7 @@ public class AgentBehaviour : MonoBehaviour
 
     // ATTRIBUTES
     [SerializeField]
+    
     private float visionLength = 5;
     [SerializeField]
     public float energy = 10;
@@ -191,7 +192,7 @@ public class AgentBehaviour : MonoBehaviour
                 }
             }
         }
-        Debug.Log(target);
+        
         target = closestObject;
         
 
