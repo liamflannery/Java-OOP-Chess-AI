@@ -51,4 +51,7 @@ Also worked on different algorithms for pathfinding
 
 Week 6/7 - Worked on report and presentation 
 
+Week 8 - reevaulating project want to create a Chess AI
+https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977/ 
+https://towardsdatascience.com/implementing-a-chess-engine-from-scratch-be38cbdae91 
 
