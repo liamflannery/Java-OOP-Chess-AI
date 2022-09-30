@@ -4,23 +4,26 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Square extends Rectangle{
-    static int size = 87;
+  
     Color color;
     int squareNumber;
     int column;
     int row;
+    int size;
+    int[] indexService;
     public Square(int pos){
         squareNumber = pos;
-        
+        indexService = Services.IndexToPos.Calculate(squareNumber);
+        size = indexService[4];
         setPosition();
         setColour();
     }
 
     void setPosition(){
-        x = (squareNumber % 8) * size;
-        y = (squareNumber / 8) * size;
-        column = (squareNumber % 8) + 1;
-        row = (squareNumber / 8) + 1;
+        column = indexService[0];
+        row = indexService[1];
+        x = indexService[2];
+        y = indexService[3];
     }
     void setColour(){
         if((row + column) % 2 == 0){

@@ -14,7 +14,7 @@ class Main extends JFrame {
         Stage stage;
 
         public App() {
-            setPreferredSize(new Dimension(1000, 720));
+            setPreferredSize(new Dimension(800, 800));
             this.addMouseListener(this);
             stage = new Stage();
         

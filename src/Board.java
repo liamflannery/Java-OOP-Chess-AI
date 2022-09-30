@@ -44,7 +44,40 @@ public class Board {
                 case(0):
                     break;
                 case(1):
-                    addPiece = new Pawn(i);
+                    addPiece = new Pawn(i, true, "pawn");
+                    break;
+                case(2):
+                    addPiece = new Rook(i, true, "rook");
+                    break;
+                case(3):
+                    addPiece = new Knight(i, true, "knight");
+                    break;
+                case(4):
+                    addPiece = new Bishop(i, true, "bishop");
+                    break;
+                case(5):
+                    addPiece = new Queen(i, true, "queen");
+                    break;
+                case(6):
+                    addPiece = new King(i, true, "king");
+                    break;
+                case(-1):
+                    addPiece = new Pawn(i, false, "pawn");
+                    break;
+                case(-2):
+                    addPiece = new Rook(i, false, "rook");
+                    break;
+                case(-3):
+                    addPiece = new Knight(i, false, "knight");
+                    break;
+                case(-4):
+                    addPiece = new Bishop(i, false, "bishop");
+                    break;
+                case(-5):
+                    addPiece = new Queen(i, false, "queen");
+                    break;
+                case(-6):
+                    addPiece = new King(i, false, "king");
                     break;
                 default:
                     break;
@@ -64,6 +97,15 @@ public class Board {
             square.paint(g, mousePos);
         };
         doToEachSquare(paint);
+        Consumer<Piece> paintPiece = piece -> {
+            piece.paint(g);
+        };
+        doToEachPiece(paintPiece);
+    }
+    private void doToEachPiece(Consumer<Piece> func) {
+        for(Piece piece: pieces){
+            func.accept(piece);
+        }
     }
     public void doToEachSquare(Consumer<Square> func) {
         for(int i=0; i < squares.length; i++) {
