@@ -27,7 +27,7 @@ class Main extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            //stage.mouseClicked(e.getX(), e.getY());
+            stage.mouseClicked(e.getX(), e.getY());
             
             // TODO Auto-generated method stub
             

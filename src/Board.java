@@ -9,6 +9,7 @@ public class Board {
     Square[] squares = new Square[64];
     List<Piece> pieces = new ArrayList<Piece>();
     int[] boardArray;
+    Piece selectedPiece;
     public Board(){
         /* 
             0 : empty
@@ -27,8 +28,8 @@ public class Board {
              0, 0, 0, 0, 0, 0, 0, 0,
              0, 0, 0, 0, 0, 0, 0, 0,
              0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             1, 1, 1, 1, 1, 1, 1, 1,
+             0, 0, 0, 1, 0, 0, 0, 0,
+             1, 1, 1, 0, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
         createPieces();
@@ -98,11 +99,15 @@ public class Board {
         };
         doToEachSquare(paint);
         Consumer<Piece> paintPiece = piece -> {
-            piece.paint(g);
+            Piece viewingPiece = piece.paint(g, mousePos); 
+            if(viewingPiece != null && viewingPiece != selectedPiece){
+                selectedPiece = piece;
+                System.out.println(piece.toString());
+            };
         };
-        doToEachPiece(paintPiece);
+        doToEachPiece(paintPiece, mousePos);
     }
-    private void doToEachPiece(Consumer<Piece> func) {
+    private void doToEachPiece(Consumer<Piece> func, Point mousePos) {
         for(Piece piece: pieces){
             func.accept(piece);
         }
