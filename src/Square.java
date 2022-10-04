@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -11,19 +12,24 @@ public class Square extends Rectangle{
     int row;
     int size;
     int[] indexService;
+    Rectangle bounds;
     public Square(int pos){
+    
         squareNumber = pos;
         indexService = Services.IndexToPos.Calculate(squareNumber);
-        size = indexService[4];
+        this.size = indexService[4];
+        
         setPosition();
         setColour();
+        
     }
 
     void setPosition(){
         column = indexService[0];
         row = indexService[1];
-        x = indexService[2];
-        y = indexService[3];
+        this.x = indexService[2];
+        this.y = indexService[3];
+        bounds = new Rectangle(new Point(x,y), new Dimension(size, size));
     }
     void setColour(){
         if((row + column) % 2 == 0){
@@ -42,12 +48,13 @@ public class Square extends Rectangle{
 
     public boolean contains(Point p) {
         if (p != null) {
-            return(super.contains(p));
-        } else {
-            return false;
-        }
+            if(bounds.contains(p)){
+                return true;
+            }
+        } 
+        return false;
     }
-    
+
     public String toString(){
         return "Square: " + squareNumber + " col: " + column + " row: " + row;
         

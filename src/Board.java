@@ -138,6 +138,11 @@ public class Board {
 
     public void mouseReleased(int x, int y) {
         if(selectedPiece != null){
+            for(int i = 0; i < squares.length; i++){
+                if(squares[i].contains(new Point(x,y))){
+                    System.out.println(i);
+                }
+            }
             selectedPiece.dropPiece();
             selectedPiece = null;
         }

@@ -18,7 +18,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -46,8 +45,6 @@ public class Piece{
         placePieceAtSquare();
         imgPoint = new Point(x,y);
         bounds = new Rectangle(imgPoint, new Dimension(pieceService[5], pieceService[5]));
-
-        
     }
     
     
@@ -111,7 +108,7 @@ public class Piece{
     
     public boolean pointAtPiece(Point mousePos){
         if(mousePos != null){
-            if (bounds.contains(mousePos)) {
+            if(bounds.contains(mousePos)) {
                 return true;
             }
         }
