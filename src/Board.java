@@ -123,12 +123,15 @@ public class Board {
       }
     public void mousePressed(int x, int y) {
         Point mousePosition = new Point(x,y);
-        for(Piece piece : pieces){
+        if(selectedPiece == null){
+            for(Piece piece : pieces){
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
                     break;
                 }
             }
+        }
+       
                
         if(selectedPiece != null){
             Collections.swap(pieces, pieces.indexOf(selectedPiece), pieces.size() -1);
