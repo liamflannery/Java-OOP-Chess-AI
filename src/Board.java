@@ -3,6 +3,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.Collections;
 
 import Pieces.*;
 public class Board {
@@ -10,6 +11,8 @@ public class Board {
     List<Piece> pieces = new ArrayList<Piece>();
     int[] boardArray;
     Piece selectedPiece;
+    Consumer<Square> paintSquares;
+    Consumer<Piece> paintPiece;
     public Board(){
         /* 
             0 : empty
@@ -34,6 +37,9 @@ public class Board {
         };
         createPieces();
         paintBoard();
+        createSquares();
+    }
+    private void createSquares() {
         for(int i = 0; i < 64; i++){
             squares[i] = new Square(i);
         }
@@ -94,20 +100,18 @@ public class Board {
 
     }
     public void paint(Graphics g, Point mousePos) {
-        Consumer<Square> paint = square -> {
+        paintSquares = square -> {
             square.paint(g, mousePos);
         };
-        doToEachSquare(paint);
-        Consumer<Piece> paintPiece = piece -> {
-            Piece viewingPiece = piece.paint(g, mousePos); 
-            if(viewingPiece != null && viewingPiece != selectedPiece){
-                selectedPiece = piece;
-                System.out.println(piece.toString());
-            };
+        
+        paintPiece = piece -> {
+            piece.paint(g, mousePos);
         };
+        
+        doToEachSquare(paintSquares);
         doToEachPiece(paintPiece, mousePos);
     }
-    private void doToEachPiece(Consumer<Piece> func, Point mousePos) {
+    public void doToEachPiece(Consumer<Piece> func, Point mousePos) {
         for(Piece piece: pieces){
             func.accept(piece);
         }
@@ -117,4 +121,25 @@ public class Board {
                 func.accept(squares[i]);
         }
       }
+    public void mousePressed(int x, int y) {
+        Point mousePosition = new Point(x,y);
+        for(Piece piece : pieces){
+                if(piece.pointAtPiece(mousePosition)){
+                    selectedPiece = piece;
+                    break;
+                }
+            }
+               
+        if(selectedPiece != null){
+            Collections.swap(pieces, pieces.indexOf(selectedPiece), pieces.size() -1);
+            selectedPiece.dragPiece();
+        }
+    }
+
+    public void mouseReleased(int x, int y) {
+        if(selectedPiece != null){
+            selectedPiece.dropPiece();
+            selectedPiece = null;
+        }
+    }
 }

@@ -39,6 +39,15 @@ public class Square extends Rectangle{
         g.setColor(Color.BLACK);
         g.drawRect(x,y,size,size);
     }
+
+    public boolean contains(Point p) {
+        if (p != null) {
+            return(super.contains(p));
+        } else {
+            return false;
+        }
+    }
+    
     public String toString(){
         return "Square: " + squareNumber + " col: " + column + " row: " + row;
         

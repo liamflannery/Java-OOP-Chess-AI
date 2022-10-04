@@ -37,14 +37,13 @@ public class Piece{
     int[] pieceService; 
     Point imgPoint;
     Rectangle bounds;
+    boolean drag = false; 
     String URL = "img/";
     public Piece(int inBoardPos, boolean white, String inPieceName){
         boardPos = inBoardPos;
         isWhite = white;
         pieceName = inPieceName;
-        pieceService = Services.IndexToPos.Calculate(boardPos);
-        x = pieceService[2] + pieceService[4]/6;
-        y = pieceService[3] + pieceService[4]/6;
+        placePieceAtSquare();
         imgPoint = new Point(x,y);
         bounds = new Rectangle(imgPoint, new Dimension(pieceService[5], pieceService[5]));
 
@@ -52,7 +51,7 @@ public class Piece{
     }
     
     
-    public Piece paint(Graphics g, Point mousePos) {
+    public void paint(Graphics g, Point mousePos) {
         if(isWhite){
             try{
                 image = ImageIO.read(new File(URL+"white_" + pieceName + ".png"));
@@ -69,19 +68,19 @@ public class Piece{
                     System.out.println("Failed to load: " + URL+ "black_" + pieceName + ".png");
                 }  
         }
-        return draw(g, mousePos);
+        draw(g, mousePos);
        
     }
    
                        
-    public Piece draw(Graphics g, Point mousePos){
-        g.drawImage(image, x, y, pieceService[5], pieceService[5], null);
-        if(mousePos != null){
-            if (bounds.contains(mousePos)) {
-                return this;
-            }
+    public void draw(Graphics g, Point mousePos){
+        if(drag){
+            x = mousePos.x - 40;
+            y = mousePos.y - 40;
         }
-        return null;
+        g.drawImage(image, x, y, pieceService[5], pieceService[5], null);
+      
+        
     }
     @Override
     public String toString() {
@@ -90,5 +89,37 @@ public class Piece{
     }
     public Point getPos(){
         return new Point(x,y);
+    }
+
+
+    public void dragPiece() {
+        drag = true;
+    }
+
+
+    public void dropPiece() {
+        drag = false;
+        placePieceAtSquare();
+
+    }
+
+    private void placePieceAtSquare(){
+        pieceService = Services.IndexToPos.Calculate(boardPos);
+        x = pieceService[2] + pieceService[4]/6;
+        y = pieceService[3] + pieceService[4]/6;
+    }
+    
+    public boolean pointAtPiece(Point mousePos){
+        if(mousePos != null){
+            if (bounds.contains(mousePos)) {
+                return true;
+            }
+        }
+        return false;
+    }
+ 
+
+    public int getBoardPos() {
+        return boardPos;
     }
 }

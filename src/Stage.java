@@ -24,9 +24,21 @@ public class Stage {
     public void underMouse(Graphics g, Point mouseLoc){
        
     }
-    public void mouseClicked(int x, int y){
-        
+
+
+
+
+    public void mousePressed(int x, int y) {
+        board.mousePressed(x,y);
     }
+
+
+
+
+    public void mouseReleased(int x, int y) {
+        board.mouseReleased(x,y);
+    }
+    
     
     
 
