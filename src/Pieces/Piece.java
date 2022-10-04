@@ -37,6 +37,7 @@ public class Piece{
     int[] pieceService; 
     Point imgPoint;
     Rectangle bounds;
+    String URL = "img/";
     public Piece(int inBoardPos, boolean white, String inPieceName){
         boardPos = inBoardPos;
         isWhite = white;
@@ -46,6 +47,7 @@ public class Piece{
         y = pieceService[3] + pieceService[4]/6;
         imgPoint = new Point(x,y);
         bounds = new Rectangle(imgPoint, new Dimension(pieceService[5], pieceService[5]));
+
         
     }
     
@@ -53,18 +55,18 @@ public class Piece{
     public Piece paint(Graphics g, Point mousePos) {
         if(isWhite){
             try{
-                image = ImageIO.read(new File(".\\img\\white_" + pieceName + ".png"));
+                image = ImageIO.read(new File(URL+"white_" + pieceName + ".png"));
                 }
             catch(IOException e){
-                    System.out.println("Failed to load: .\\img\\white_" + pieceName + ".png");
+                    System.out.println("Failed to load: " + URL+ "white_" + pieceName + ".png");
                 }
         }
         else{
             try{
-                image = ImageIO.read(new File(".\\img\\black_" + pieceName + ".png"));
+                image = ImageIO.read(new File(URL+"black_" + pieceName + ".png"));
                 }
             catch(IOException e){
-                    System.out.println("Failed to load: .\\img\\black_" + pieceName + ".png");
+                    System.out.println("Failed to load: " + URL+ "black_" + pieceName + ".png");
                 }  
         }
         return draw(g, mousePos);
