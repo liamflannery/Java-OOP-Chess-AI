@@ -5,13 +5,24 @@ import Board.Board;
 public class MoveHandler {
     int[] boardArray;
     Board board;
+    PieceMoves pawnMoves;
     public MoveHandler(int[] inBoardArray, Board inBoard){
         boardArray = inBoardArray;
         board = inBoard;
+        pawnMoves = new PawnMoves();
     }
     public int[] findPieceMoves(int boardPos){
         int[] moves = new int[64];
-        moves[0] = 1;
+        int piece = boardArray[boardPos];
+        switch(Math.abs(piece)){
+            case(0):
+                break;
+            case(1):
+                moves = pawnMoves.find(boardArray, boardPos, moves);
+                
+
+
+        }
         return moves;
     }
     public void move(int origin, int destination){

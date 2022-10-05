@@ -43,8 +43,8 @@ public class Piece{
         isWhite = white;
         pieceName = inPieceName;
         placePieceAtSquare();
-        imgPoint = new Point(x,y);
-        bounds = new Rectangle(imgPoint, new Dimension(pieceService[5], pieceService[5]));
+        
+        
     }
     
     
@@ -104,6 +104,8 @@ public class Piece{
         pieceService = Services.IndexToPos.Calculate(boardPos);
         x = pieceService[2] + pieceService[4]/6;
         y = pieceService[3] + pieceService[4]/6;
+        imgPoint = new Point(x,y);
+        bounds = new Rectangle(imgPoint, new Dimension(pieceService[5], pieceService[5]));
     }
     
     public boolean pointAtPiece(Point mousePos){

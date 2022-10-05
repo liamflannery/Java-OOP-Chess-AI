@@ -3,7 +3,9 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-
+import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -28,7 +30,7 @@ class Main extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
            // stage.mouseClicked(e.getX(), e.getY());
-           stage.mousePressed(e.getX(), e.getY());
+           //stage.mousePressed(e.getX(), e.getY());
             // TODO Auto-generated method stub
             
         }
@@ -72,10 +74,20 @@ class Main extends JFrame {
         this.setVisible(true);
     }
 
+    
     public void run() throws InterruptedException{
         while (true) {
+            Instant startTime = Instant.now();
             this.repaint();
-            Thread.sleep(20);
+            Instant endTime = Instant.now();
+            long howLong = Duration.between(startTime, endTime).toMillis();
+            try{
+                Thread.sleep(20l - howLong);
+            } catch (InterruptedException e){
+                System.out.println("thread was interrupted, but who cares?");
+            } catch (IllegalArgumentException e){
+                System.out.println("application can't keep up with framerate");
+            }
         }
     }
 }
