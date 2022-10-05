@@ -9,8 +9,9 @@ public class IndexToPos {
         [4] = squareSize
         [5] = pieceSize
     */
-    static int squareSize = 100;
-    static int pieceSize = 65;
+    static int squareSize = (int) Values.valueOf("Square Size");
+    static int pieceSize = (int) Values.valueOf("Piece Size");
+
     public final static int[] Calculate(int index){
         int column = (index % 8) + 1;
         int row = (index / 8) + 1;

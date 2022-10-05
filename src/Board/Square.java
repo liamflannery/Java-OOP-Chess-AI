@@ -1,9 +1,13 @@
-import java.awt.Color;
+package Board;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import Services.Values;
+
+import java.awt.Color;
 public class Square extends Rectangle{
   
     Color color;
@@ -33,10 +37,10 @@ public class Square extends Rectangle{
     }
     void setColour(){
         if((row + column) % 2 == 0){
-            color = new Color(33, 52, 95);
+            color = (Color) Values.valueOf("Light Square");
         }
         else{
-            color = new Color(227, 212, 213);
+            color = (Color) Values.valueOf("Dark Square");
         }
     }
     void paint(Graphics g, Point mousePos) {
@@ -58,6 +62,14 @@ public class Square extends Rectangle{
     public String toString(){
         return "Square: " + squareNumber + " col: " + column + " row: " + row;
         
+    }
+
+    public void highlight() {
+        color = (Color) Values.valueOf("Highlight");
+    }
+
+    public void unHighlight() {
+        setColour();
     }
     
     

@@ -1,15 +1,17 @@
+package Board;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.Collections;
-
+import Moves.*;
 import Pieces.*;
 public class Board {
     Square[] squares = new Square[64];
     List<Piece> pieces = new ArrayList<Piece>();
     int[] boardArray;
+    MoveHandler moveHandler;
     Piece selectedPiece;
     Consumer<Square> paintSquares;
     Consumer<Piece> paintPiece;
@@ -35,6 +37,7 @@ public class Board {
              1, 1, 1, 0, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
+        moveHandler = new MoveHandler(boardArray, this);
         createPieces();
         paintBoard();
         createSquares();
@@ -121,12 +124,16 @@ public class Board {
                 func.accept(squares[i]);
         }
       }
+    
+    int[] potentialSquares;
     public void mousePressed(int x, int y) {
         Point mousePosition = new Point(x,y);
         if(selectedPiece == null){
             for(Piece piece : pieces){
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
+                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos());
+                    paintSquares();
                     break;
                 }
             }
@@ -139,15 +146,38 @@ public class Board {
         }
     }
 
+   
     public void mouseReleased(int x, int y) {
         if(selectedPiece != null){
             for(int i = 0; i < squares.length; i++){
                 if(squares[i].contains(new Point(x,y))){
-                    System.out.println(i);
+                    if(potentialSquares[i] != 0){
+                        moveHandler.move(selectedPiece.getBoardPos(), i);
+                    }
                 }
             }
             selectedPiece.dropPiece();
             selectedPiece = null;
+            potentialSquares = new int[64];
+            paintSquares();
+        }
+    }
+    public void updatePieces(int origin, int destination) {
+        for(Piece piece : pieces){
+            if(piece.getBoardPos() == origin){
+                piece.updatePos(destination);
+                break;
+            }
+        }
+    }
+    private void paintSquares() {
+        for(int i = 0; i < squares.length; i++){
+            if(potentialSquares[i] == 1){
+                squares[i].highlight();
+            }
+            else{
+                squares[i].unHighlight();
+            }
         }
     }
 }

@@ -119,4 +119,10 @@ public class Piece{
     public int getBoardPos() {
         return boardPos;
     }
+
+
+    public void updatePos(int destination) {
+        boardPos = destination;
+        placePieceAtSquare();
+    }
 }
