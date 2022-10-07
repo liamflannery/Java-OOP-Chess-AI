@@ -1,6 +1,7 @@
 package Moves;
 
 import Board.Board;
+import Services.Printer;
 
 public class MoveHandler {
     int[] boardArray;
@@ -51,6 +52,7 @@ public class MoveHandler {
                 break;
 
         }
+        Printer.printArray(moves);
         return moves;
     }
     //move piece from origin square to destination square, update visuals to reflect

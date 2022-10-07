@@ -26,9 +26,9 @@ public class KnightMoves extends PieceMoves{
                     }
                     break;
                 case(-15):
-                if(numSquaresToEdge[boardPos][1] >= 2 && numSquaresToEdge[boardPos][3] >= 1){
-                    inc = knightDir[i];
-                }
+                    if(numSquaresToEdge[boardPos][1] >= 2 && numSquaresToEdge[boardPos][3] >= 1){
+                        inc = knightDir[i];
+                    }
                 break;
                 case(-10):
                     if(numSquaresToEdge[boardPos][1] >= 1 && numSquaresToEdge[boardPos][2] >= 2){
@@ -46,9 +46,9 @@ public class KnightMoves extends PieceMoves{
                     }
                     break;
                 case(15):
-                if(numSquaresToEdge[boardPos][0] >= 2 && numSquaresToEdge[boardPos][2] >= 1){
-                    inc = knightDir[i];
-                }
+                    if(numSquaresToEdge[boardPos][0] >= 2 && numSquaresToEdge[boardPos][2] >= 1){
+                        inc = knightDir[i];
+                    }
                 break;
                 case(10):
                     if(numSquaresToEdge[boardPos][0] >= 1 && numSquaresToEdge[boardPos][3] >= 2){
@@ -56,10 +56,10 @@ public class KnightMoves extends PieceMoves{
                     }
                     break;
                 case(6):
-                if(numSquaresToEdge[boardPos][2] >= 2 && numSquaresToEdge[boardPos][0] >= 1){
-                    inc = knightDir[i];
-                }
-                break;
+                    if(numSquaresToEdge[boardPos][2] >= 2 && numSquaresToEdge[boardPos][0] >= 1){
+                        inc = knightDir[i];
+                    }
+                    break;
                 default:
                     inc = knightDir[i];
                     

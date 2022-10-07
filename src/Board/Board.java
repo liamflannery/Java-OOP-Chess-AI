@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.Collections;
 import Moves.*;
 import Pieces.*;
+import Services.Printer;
 public class Board {
     Square[] squares = new Square[64];
     List<Piece> pieces = new ArrayList<Piece>();
@@ -157,7 +158,7 @@ public class Board {
                 if(squares[i].contains(new Point(x,y))){
                     if(potentialSquares[i] != 0){
                         moveHandler.move(selectedPiece.getBoardPos(), i);
-                        printBoard();
+                       // Printer.printArray(boardArray);
                     }
                 }
             }
@@ -197,36 +198,5 @@ public class Board {
             }
         }
     }
-    //prints board to the terminal
-    private void printBoard() {
-        int counter = 0;
-        List<String> rows = new ArrayList<String>();
-        String row = "";
-        for(int i = 0; i < boardArray.length; i++){
-            if(counter < 8){
-                if(boardArray[i] < 0){
-                    row += boardArray[i];
-                }
-                else{
-                    row += " " + boardArray[i];
-                }
-                counter++;
-            }
-            else{
-                rows.add(row);
-                if(boardArray[i] < 0){
-                    row = "" + boardArray[i];
-                }
-                else{
-                    row = " " + boardArray[i];
-                }
-                
-                counter = 1;
-            }
-            
-        }
-       for(String outRow : rows){
-        System.out.println(outRow);
-       }
-    }
+    
 }

@@ -1,5 +1,6 @@
 package Moves;
 
+import Services.BoardCalculations;
 import Services.Values;
 
 public class PieceMoves {
@@ -8,7 +9,7 @@ public class PieceMoves {
     int[] moves;
     int move;
     int[] directionIndex = new int[]{8,-8,-1,1,7,-7,9,-9};
-    int[][] numSquaresToEdge = Values.computeSquares();
+    int[][] numSquaresToEdge = BoardCalculations.computeSquares();
     boolean moved;
     
     public int[] find(int[] boardArray, int boardPos, int[] moves, boolean hasMoved) {

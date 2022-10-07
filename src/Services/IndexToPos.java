@@ -13,7 +13,7 @@ public class IndexToPos {
     static int squareSize = (int) Values.valueOf("Square Size");
     static int pieceSize = (int) Values.valueOf("Piece Size");
 
-    public final static int[] Calculate(int index){
+    public static final int[] Calculate(int index){
         int column = (index % 8) + 1;
         int row = (index / 8) + 1;
         int x = (index % 8) * squareSize;
