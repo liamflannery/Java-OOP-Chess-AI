@@ -33,8 +33,8 @@ public class Board {
              0, 0, 0, 0, 0, 0, 0, 0,
              0, 0, 0, 0, 0, 0, 0, 0,
              0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 1, 0, 0, 0, 0,
-             1, 1, 1, 0, 1, 1, 1, 1,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
         moveHandler = new MoveHandler(boardArray, this);
@@ -132,7 +132,7 @@ public class Board {
             for(Piece piece : pieces){
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
-                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos());
+                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), selectedPiece.hasMoved());
                     paintSquares();
                     break;
                 }
@@ -153,6 +153,7 @@ public class Board {
                 if(squares[i].contains(new Point(x,y))){
                     if(potentialSquares[i] != 0){
                         moveHandler.move(selectedPiece.getBoardPos(), i);
+                        printBoard();
                     }
                 }
             }
@@ -162,10 +163,20 @@ public class Board {
             paintSquares();
         }
     }
+    
     public void updatePieces(int origin, int destination) {
+        removePiece(destination);
         for(Piece piece : pieces){
             if(piece.getBoardPos() == origin){
                 piece.updatePos(destination);
+                break;
+            }
+        }
+    }
+    private void removePiece(int destination) {
+        for(Piece piece: pieces){
+            if(piece.getBoardPos() == destination){
+                pieces.remove(piece);
                 break;
             }
         }
@@ -179,5 +190,37 @@ public class Board {
                 squares[i].unHighlight();
             }
         }
+    }
+
+    private void printBoard() {
+        int counter = 0;
+        List<String> rows = new ArrayList<String>();
+        String row = "";
+        for(int i = 0; i < boardArray.length; i++){
+            if(counter < 8){
+                if(boardArray[i] < 0){
+                    row += boardArray[i];
+                }
+                else{
+                    row += " " + boardArray[i];
+                }
+                counter++;
+            }
+            else{
+                rows.add(row);
+                if(boardArray[i] < 0){
+                    row = "" + boardArray[i];
+                }
+                else{
+                    row = " " + boardArray[i];
+                }
+                
+                counter = 1;
+            }
+            
+        }
+       for(String outRow : rows){
+        System.out.println(outRow);
+       }
     }
 }

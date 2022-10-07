@@ -1,8 +1,6 @@
 package Moves;
 
-public class RookMoves extends PieceMoves{
-
-    
+public class KingMoves extends PieceMoves{
     @Override
     public int[] find(int[] boardArray, int boardPos, int[] moves, boolean moved) {
         this.boardArray = boardArray;
@@ -10,11 +8,9 @@ public class RookMoves extends PieceMoves{
         this.moves = moves;
         this.moved = moved;
         
-         slidingMoves(0,4);
+         singleMoves(0,8);
      
         
         return moves;
     }
-
-    
 }
