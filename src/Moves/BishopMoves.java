@@ -7,8 +7,8 @@ public class BishopMoves extends PieceMoves{
         this.boardPos = boardPos;
         this.moves = moves;
         this.moved = moved;
-        
-         slidingMoves(4,8);
+        //diagonal sliding moves
+        slidingMoves(4,8);
      
         
         return moves;

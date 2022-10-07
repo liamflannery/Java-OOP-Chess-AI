@@ -7,8 +7,8 @@ public class KingMoves extends PieceMoves{
         this.boardPos = boardPos;
         this.moves = moves;
         this.moved = moved;
-        
-         singleMoves(0,8);
+        //single moves in all direcitons
+        singleMoves(0,8);
      
         
         return moves;

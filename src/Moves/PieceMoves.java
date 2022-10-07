@@ -16,6 +16,8 @@ public class PieceMoves {
         return moves;
 
     }
+    //one space moves (king/pawn)
+    //for pawn, handle diagonal captures 
     public void singleMoves(int direction, int directionEnd){
         for(int i = direction; i < directionEnd ; i++){
             move = boardPos + directionIndex[i];
@@ -28,6 +30,8 @@ public class PieceMoves {
             
         }
     }
+    //multi space moves (rook/bishop/queen)
+    //8 directions, [0-4] are straight [4-8] are diagonal
     public void slidingMoves(int direction, int directionEnd){
         
         for(int i = direction; i < directionEnd ; i++){
@@ -56,6 +60,9 @@ public class PieceMoves {
             
         }
     }
+
+    //check if move is in range of board
+    //check if move will take opponent or will move to friendly square
     public void vetMove(){
         if(move > 0 && move < boardArray.length){
             if(boardArray[move] != 0){

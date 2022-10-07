@@ -100,7 +100,7 @@ public class Piece{
         placePieceAtSquare();
 
     }
-
+    //calculates the row and column to place piece
     private void placePieceAtSquare(){
         pieceService = Services.IndexToPos.Calculate(boardPos);
         x = pieceService[2] + pieceService[4]/6;
@@ -108,7 +108,7 @@ public class Piece{
         imgPoint = new Point(x,y);
         bounds = new Rectangle(imgPoint, new Dimension(pieceService[5], pieceService[5]));
     }
-    
+    //checks if mouse is over piece
     public boolean pointAtPiece(Point mousePos){
         if(mousePos != null){
             if(bounds.contains(mousePos)) {
@@ -123,7 +123,7 @@ public class Piece{
         return boardPos;
     }
 
-
+    //moves piece
     public void updatePos(int destination) {
         boardPos = destination;
         moved = true;

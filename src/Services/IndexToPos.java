@@ -2,6 +2,7 @@ package Services;
 import java.awt.Point;
 public class IndexToPos {
     /*
+        input board position (0-63), return:
         [0] = column
         [1] = row
         [2] = x coord

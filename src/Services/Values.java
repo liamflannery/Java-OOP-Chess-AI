@@ -6,7 +6,7 @@ public class Values {
     
     private static Map<String, Object> valuesDict;
     
-    
+    //store global visual values
     public static final Object valueOf(String input){
         valuesDict = new HashMap<String, Object>();
         valuesDict.put("Light Square", new Color(214, 248, 214));
@@ -18,6 +18,8 @@ public class Values {
 
         return valuesDict.get(input);
     }
+    //return array with number of squares to the edge of the board 
+    //in every direction, from every square 
     public static final int[][] computeSquares(){
         int[][] numSquaresToEdge = new int[64][];
         for(int squareIndex = 0; squareIndex < numSquaresToEdge.length; squareIndex++){

@@ -24,6 +24,7 @@ public class MoveHandler {
         kingMoves = new KingMoves();
         
     }
+    //find all potential moves for piece at certain position on board
     public int[] findPieceMoves(int boardPos, boolean hasMoved){
         int[] moves = new int[64];
         int piece = boardArray[boardPos];
@@ -52,6 +53,7 @@ public class MoveHandler {
         }
         return moves;
     }
+    //move piece from origin square to destination square, update visuals to reflect
     public void move(int origin, int destination){
         int piece = boardArray[origin];
         boardArray[destination] = piece;

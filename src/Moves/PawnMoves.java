@@ -36,7 +36,7 @@ public class PawnMoves extends PieceMoves{
 
     }
     public void specialPawnMoves(){
-       
+       //can move two spaces on start
         if(!(moved)){
             move = boardPos - 16 * boardArray[boardPos];
             if(boardArray[move] == 0 && boardArray[boardPos - 8 * boardArray[boardPos]] == 0){

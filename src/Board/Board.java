@@ -27,6 +27,7 @@ public class Board {
             - : black
             + : white 
         */
+        //set up board
         boardArray = new int[]{
             -2,-3,-4,-5,-6,-4,-3,-2,
             -1,-1,-1,-1,-1,-1,-1,-1,
@@ -39,14 +40,16 @@ public class Board {
         };
         moveHandler = new MoveHandler(boardArray, this);
         createPieces();
-        paintBoard();
         createSquares();
     }
+
+    //create squares
     private void createSquares() {
         for(int i = 0; i < 64; i++){
             squares[i] = new Square(i);
         }
     }
+    //create pieces
     void createPieces(){
         for(int i = 0; i < boardArray.length; i++){
             Piece addPiece = null;
@@ -97,11 +100,9 @@ public class Board {
             }
 
         }
-        System.out.println(pieces);
     }
-    void paintBoard(){
-
-    }
+   
+    //paint pieces and squares
     public void paint(Graphics g, Point mousePos) {
         paintSquares = square -> {
             square.paint(g, mousePos);
@@ -125,6 +126,9 @@ public class Board {
         }
       }
     
+
+    //when mouse pressed, pick up piece under mouse, and find the pieces potential moves
+    //^assuming there is a piece under the mouse, and the mouse isn't already holding a piece
     int[] potentialSquares;
     public void mousePressed(int x, int y) {
         Point mousePosition = new Point(x,y);
@@ -146,7 +150,7 @@ public class Board {
         }
     }
 
-   
+   //when mouse released, place piece if it is over a square it can move to 
     public void mouseReleased(int x, int y) {
         if(selectedPiece != null){
             for(int i = 0; i < squares.length; i++){
@@ -163,7 +167,7 @@ public class Board {
             paintSquares();
         }
     }
-    
+    //move piece objects to reflect array 
     public void updatePieces(int origin, int destination) {
         removePiece(destination);
         for(Piece piece : pieces){
@@ -173,6 +177,7 @@ public class Board {
             }
         }
     }
+    //delete piece at destination (handle captures)
     private void removePiece(int destination) {
         for(Piece piece: pieces){
             if(piece.getBoardPos() == destination){
@@ -181,6 +186,7 @@ public class Board {
             }
         }
     }
+    //visually display potential moves
     private void paintSquares() {
         for(int i = 0; i < squares.length; i++){
             if(potentialSquares[i] == 1){
@@ -191,7 +197,7 @@ public class Board {
             }
         }
     }
-
+    //prints board to the terminal
     private void printBoard() {
         int counter = 0;
         List<String> rows = new ArrayList<String>();
