@@ -38,7 +38,6 @@ public class Piece{
     Rectangle bounds;
     boolean drag = false; 
     String URL = "img/";
-    boolean moved = false;
     public Piece(int inBoardPos, boolean white, String inPieceName){
         boardPos = inBoardPos;
         isWhite = white;
@@ -126,12 +125,8 @@ public class Piece{
     //moves piece
     public void updatePos(int destination) {
         boardPos = destination;
-        moved = true;
         placePieceAtSquare();
     }
 
 
-    public boolean hasMoved() {
-        return moved;
-    }
 }

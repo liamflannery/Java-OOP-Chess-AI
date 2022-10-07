@@ -5,7 +5,7 @@ import java.awt.Color;
 public class Values {
     
     private static Map<String, Object> valuesDict;
-    
+    static boolean whiteAtBottom = true;
     //store global visual values
     public static final Object valueOf(String input){
         valuesDict = new HashMap<String, Object>();
@@ -18,7 +18,26 @@ public class Values {
 
         return valuesDict.get(input);
     }
-    
+    public static final int upDirection(int piece){
+        if(piece < 0){
+            if(whiteAtBottom){
+                return 1;
+            }
+            else{
+                return -1;
+            }
+        }
+        else if(piece > 0){
+            if(whiteAtBottom){
+                return -1;
+            }
+            else{
+                return 1;
+            }
+
+        }
+        return 0;
+    }
 
     
 }

@@ -137,7 +137,7 @@ public class Board {
             for(Piece piece : pieces){
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
-                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), selectedPiece.hasMoved());
+                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), boardArray);
                     paintSquares();
                     break;
                 }

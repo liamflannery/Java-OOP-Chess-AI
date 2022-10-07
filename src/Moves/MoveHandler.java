@@ -26,32 +26,35 @@ public class MoveHandler {
         
     }
     //find all potential moves for piece at certain position on board
-    public static final int[] findPieceMoves(int boardPos, boolean hasMoved){
+    public static final int[] findPieceMoves(int boardPos, int[] currentBoardArray){
         int[] moves = new int[64];
-        int piece = boardArray[boardPos];
+        int piece = currentBoardArray[boardPos];
         switch(Math.abs(piece)){
             case(0):
                 break;
             case(1):
-                moves = pawnMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = pawnMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(2):
-                moves = rookMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = rookMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(3):
-                moves = knightMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = knightMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(4):
-                moves = bishopMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = bishopMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(5):
-                moves = queenMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = queenMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(6):
-                moves = kingMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = kingMoves.find(currentBoardArray, boardPos, moves);
+                break;
+            default:
                 break;
 
         }
+        
         //Printer.printArray(moves);
         return moves;
     }

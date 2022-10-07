@@ -3,11 +3,10 @@ package Moves;
 public class KnightMoves extends PieceMoves{
     int[] knightDir;
     @Override
-    public int[] find(int[] boardArray, int boardPos, int[] moves, boolean moved) {
+    public int[] find(int[] boardArray, int boardPos, int[] moves) {
         this.boardArray = boardArray;
         this.boardPos = boardPos;
         this.moves = moves;
-        this.moved = moved;
         knightDir = new int[]{-17,-15,-10,-6,6,10,15,17};
         knightMoves();
      
