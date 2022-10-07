@@ -65,7 +65,7 @@ public class PieceMoves {
     //check if move is in range of board
     //check if move will take opponent or will move to friendly square
     public void vetMove(){
-        if(move > 0 && move < boardArray.length){
+        if(move >= 0 && move < boardArray.length){
             if(boardArray[move] != 0){
                 if(boardArray[move] * boardArray[boardPos] < 0){
                     // if(boardPos[move] * type < 0 && Math.abs(boardPos[move]) == 6){

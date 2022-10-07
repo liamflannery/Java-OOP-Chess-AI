@@ -4,14 +4,14 @@ import Board.Board;
 import Services.Printer;
 
 public class MoveHandler {
-    int[] boardArray;
+    static int[] boardArray;
     Board board;
-    PieceMoves pawnMoves;
-    PieceMoves knightMoves;
-    PieceMoves rookMoves;
-    PieceMoves bishopMoves;
-    PieceMoves queenMoves;
-    PieceMoves kingMoves;
+    static PieceMoves pawnMoves;
+    static PieceMoves knightMoves;
+    static PieceMoves rookMoves;
+    static PieceMoves bishopMoves;
+    static PieceMoves queenMoves;
+    static PieceMoves kingMoves;
     
 
     public MoveHandler(int[] inBoardArray, Board inBoard){
@@ -26,7 +26,7 @@ public class MoveHandler {
         
     }
     //find all potential moves for piece at certain position on board
-    public int[] findPieceMoves(int boardPos, boolean hasMoved){
+    public static final int[] findPieceMoves(int boardPos, boolean hasMoved){
         int[] moves = new int[64];
         int piece = boardArray[boardPos];
         switch(Math.abs(piece)){
@@ -52,7 +52,7 @@ public class MoveHandler {
                 break;
 
         }
-        Printer.printArray(moves);
+        //Printer.printArray(moves);
         return moves;
     }
     //move piece from origin square to destination square, update visuals to reflect
