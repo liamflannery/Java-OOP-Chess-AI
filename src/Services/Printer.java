@@ -13,29 +13,32 @@ public class Printer {
         System.out.println(" / / / / / / / / \n");
         int counter = 0;
         List<String> rows = new ArrayList<String>();
-        String row = "";
+        String row = ""; 
         for(int i = 0; i < array.length; i++){
             if(counter < 8){
                 if(array[i] < 0){
-                    row += array[i];
+                    row += array[i] + ",";
                 }
                 else{
-                    row += " " + array[i];
+                    row += " " + array[i] + ",";
                 }
                 counter++;
             }
             else{
                 rows.add(row);
                 if(array[i] < 0){
-                    row = "" + array[i];
+                    row =  array[i] + ",";
                 }
                 else{
-                    row = " " + array[i];
+                    row =  " " + array[i] + ",";
                 }
                 
                 counter = 1;
             }
             
+        }
+        if(!rows.contains(row)){
+            rows.add(row);
         }
        for(String outRow : rows){
         System.out.println(outRow);
