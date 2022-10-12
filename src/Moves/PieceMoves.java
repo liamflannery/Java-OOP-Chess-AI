@@ -65,23 +65,23 @@ public class PieceMoves {
     //check if move will take opponent or will move to friendly square
     public void vetMove(){
         if(move >= 0 && move < boardArray.length){
-            if(!CheckFinder.willCheck(boardPos, move, boardArray)){
-                if(boardArray[move] != 0){
-                    if(boardArray[move] * boardArray[boardPos] < 0){
-                        if(Math.abs(boardArray[move]) == 6){
-                            moves[move] = 2;
-                        }
-                        else{
-                            moves[move] = 1;
-                        }
-                       
+            if(boardArray[move] != 0){
+                if(boardArray[move] * boardPos < 0){
+                    System.out.println(boardPos);
+                    if(Math.abs(boardArray[move]) == 6){
+                        moves[move] = 2;
                     }
-                }
-                else{
-                    moves[move] = 1;
+                    else{
+                        moves[move] = 1;
+                    }
+                   
                 }
             }
-        }
+            else{
+                moves[move] = 1;
+            }
     }
+    }
+    
    
 }

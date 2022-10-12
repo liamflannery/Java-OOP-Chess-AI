@@ -58,11 +58,5 @@ public class MoveHandler {
         //Printer.printArray(moves);
         return moves;
     }
-    //move piece from origin square to destination square, update visuals to reflect
-    public void move(int origin, int destination){
-        int piece = boardArray[origin];
-        boardArray[destination] = piece;
-        boardArray[origin] = 0;
-        board.updatePieces(origin, destination);
-    }
+
 }

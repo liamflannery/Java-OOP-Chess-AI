@@ -6,19 +6,35 @@ import Services.Printer;
 
 public final class CheckFinder {
     static int[] moves;
-    public final static boolean willCheck(int boardPos, int movePos, int[] boardArray){
+    static MoveHandler checkMoveHandler;
+    public static void findMoves(int[] potentialSquares, int[] boardArray, int boardPos) {
         int[] testBoard = boardArray.clone();
         int currentPiece = boardArray[boardPos];
-        testBoard[boardPos] = 0;
-        testBoard[movePos] = currentPiece;
-        Printer.printArray(testBoard);
-        for(int i = 0; i < testBoard.length; i++){
-            if(testBoard[i] * currentPiece < 0){
+        
+        for(int i = 0; i < potentialSquares.length; i++){
+            if(potentialSquares[i] > 0){
+                testBoard = boardArray.clone();
+                testBoard[boardPos] = 0;
+                testBoard[i] = currentPiece;
                 
-                //moves = MoveHandler.findPieceMoves(i, testBoard);
-                // if(Arrays.asList(moves).contains(2)){
-                //     return true;
-                // }
+                for(int j = 0; j < testBoard.length; j++){
+                    if(boardPos * testBoard[j] < 0){
+                        int[] checkBoard = checkMoveHandler.findPieceMoves(j, testBoard);
+                        Printer.printArray(checkBoard);
+                        if(willCheck(checkBoard)){
+                            System.out.println("found a check");
+                            potentialSquares[i] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    private static boolean willCheck(int[] checkBoard) {
+        for(int i = 0; i < checkBoard.length; i++){
+            if(checkBoard[i] == 2){
+                return true;
             }
         }
         return false;

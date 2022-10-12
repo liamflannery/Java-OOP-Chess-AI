@@ -148,6 +148,9 @@ public class Board {
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
                     potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), boardArray);
+                    System.out.println("potential squares:"); Printer.printArray(potentialSquares);
+                   // CheckFinder.findMoves(potentialSquares, boardArray, selectedPiece.getBoardPos());
+                //    System.out.println("after checkfind squares:"); Printer.printArray(potentialSquares);
                     paintSquares();
                     break;
                 }
@@ -167,7 +170,7 @@ public class Board {
             for(int i = 0; i < squares.length; i++){
                 if(squares[i].contains(new Point(x,y))){
                     if(potentialSquares[i] != 0){
-                        moveHandler.move(selectedPiece.getBoardPos(), i);
+                        move(selectedPiece.getBoardPos(), i);
                        // Printer.printArray(boardArray);
                     }
                 }
@@ -200,13 +203,20 @@ public class Board {
     //visually display potential moves
     private void paintSquares() {
         for(int i = 0; i < squares.length; i++){
-            if(potentialSquares[i] == 1){
+            if(potentialSquares[i] != 0){
                 squares[i].highlight();
             }
             else{
                 squares[i].unHighlight();
             }
         }
+    }
+    //move piece from origin square to destination square, update visuals to reflect
+    public void move(int origin, int destination){
+        int piece = boardArray[origin];
+        boardArray[destination] = piece;
+        boardArray[origin] = 0;
+        updatePieces(origin, destination);
     }
     
 }
