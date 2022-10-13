@@ -1,16 +1,17 @@
 package Moves;
 
 import Board.Board;
+import Services.Printer;
 
 public class MoveHandler {
-    int[] boardArray;
+    static int[] boardArray;
     Board board;
-    PieceMoves pawnMoves;
-    PieceMoves knightMoves;
-    PieceMoves rookMoves;
-    PieceMoves bishopMoves;
-    PieceMoves queenMoves;
-    PieceMoves kingMoves;
+    static PieceMoves pawnMoves;
+    static PieceMoves knightMoves;
+    static PieceMoves rookMoves;
+    static PieceMoves bishopMoves;
+    static PieceMoves queenMoves;
+    static PieceMoves kingMoves;
     
 
     public MoveHandler(int[] inBoardArray, Board inBoard){
@@ -25,39 +26,37 @@ public class MoveHandler {
         
     }
     //find all potential moves for piece at certain position on board
-    public int[] findPieceMoves(int boardPos, boolean hasMoved){
+    public static final int[] findPieceMoves(int boardPos, int[] currentBoardArray){
         int[] moves = new int[64];
-        int piece = boardArray[boardPos];
+        int piece = currentBoardArray[boardPos];
         switch(Math.abs(piece)){
             case(0):
                 break;
             case(1):
-                moves = pawnMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = pawnMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(2):
-                moves = rookMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = rookMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(3):
-                moves = knightMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = knightMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(4):
-                moves = bishopMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = bishopMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(5):
-                moves = queenMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = queenMoves.find(currentBoardArray, boardPos, moves);
                 break;
             case(6):
-                moves = kingMoves.find(boardArray, boardPos, moves, hasMoved);
+                moves = kingMoves.find(currentBoardArray, boardPos, moves);
+                break;
+            default:
                 break;
 
         }
+        
+        //Printer.printArray(moves);
         return moves;
     }
-    //move piece from origin square to destination square, update visuals to reflect
-    public void move(int origin, int destination){
-        int piece = boardArray[origin];
-        boardArray[destination] = piece;
-        boardArray[origin] = 0;
-        board.updatePieces(origin, destination);
-    }
+
 }

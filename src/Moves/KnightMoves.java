@@ -3,11 +3,10 @@ package Moves;
 public class KnightMoves extends PieceMoves{
     int[] knightDir;
     @Override
-    public int[] find(int[] boardArray, int boardPos, int[] moves, boolean moved) {
+    public int[] find(int[] boardArray, int boardPos, int[] moves) {
         this.boardArray = boardArray;
         this.boardPos = boardPos;
         this.moves = moves;
-        this.moved = moved;
         knightDir = new int[]{-17,-15,-10,-6,6,10,15,17};
         knightMoves();
      
@@ -26,9 +25,9 @@ public class KnightMoves extends PieceMoves{
                     }
                     break;
                 case(-15):
-                if(numSquaresToEdge[boardPos][1] >= 2 && numSquaresToEdge[boardPos][3] >= 1){
-                    inc = knightDir[i];
-                }
+                    if(numSquaresToEdge[boardPos][1] >= 2 && numSquaresToEdge[boardPos][3] >= 1){
+                        inc = knightDir[i];
+                    }
                 break;
                 case(-10):
                     if(numSquaresToEdge[boardPos][1] >= 1 && numSquaresToEdge[boardPos][2] >= 2){
@@ -46,9 +45,9 @@ public class KnightMoves extends PieceMoves{
                     }
                     break;
                 case(15):
-                if(numSquaresToEdge[boardPos][0] >= 2 && numSquaresToEdge[boardPos][2] >= 1){
-                    inc = knightDir[i];
-                }
+                    if(numSquaresToEdge[boardPos][0] >= 2 && numSquaresToEdge[boardPos][2] >= 1){
+                        inc = knightDir[i];
+                    }
                 break;
                 case(10):
                     if(numSquaresToEdge[boardPos][0] >= 1 && numSquaresToEdge[boardPos][3] >= 2){
@@ -56,10 +55,10 @@ public class KnightMoves extends PieceMoves{
                     }
                     break;
                 case(6):
-                if(numSquaresToEdge[boardPos][2] >= 2 && numSquaresToEdge[boardPos][0] >= 1){
-                    inc = knightDir[i];
-                }
-                break;
+                    if(numSquaresToEdge[boardPos][2] >= 2 && numSquaresToEdge[boardPos][0] >= 1){
+                        inc = knightDir[i];
+                    }
+                    break;
                 default:
                     inc = knightDir[i];
                     

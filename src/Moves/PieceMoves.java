@@ -1,5 +1,6 @@
 package Moves;
 
+import Services.BoardCalculations;
 import Services.Values;
 
 public class PieceMoves {
@@ -8,10 +9,9 @@ public class PieceMoves {
     int[] moves;
     int move;
     int[] directionIndex = new int[]{8,-8,-1,1,7,-7,9,-9};
-    int[][] numSquaresToEdge = Values.computeSquares();
-    boolean moved;
+    int[][] numSquaresToEdge = BoardCalculations.computeSquares();
     
-    public int[] find(int[] boardArray, int boardPos, int[] moves, boolean hasMoved) {
+    public int[] find(int[] boardArray, int boardPos, int[] moves) {
         
         return moves;
 
@@ -64,16 +64,16 @@ public class PieceMoves {
     //check if move is in range of board
     //check if move will take opponent or will move to friendly square
     public void vetMove(){
-        if(move > 0 && move < boardArray.length){
+        if(move >= 0 && move < boardArray.length){
             if(boardArray[move] != 0){
-                if(boardArray[move] * boardArray[boardPos] < 0){
-                    // if(boardPos[move] * type < 0 && Math.abs(boardPos[move]) == 6){
-                    //     moves[move] = 2;
-                    //     willCheck = true;
-                    // }
-                    // else{
+                if(boardArray[move] * boardPos < 0){
+                    System.out.println(boardPos);
+                    if(Math.abs(boardArray[move]) == 6){
+                        moves[move] = 2;
+                    }
+                    else{
                         moves[move] = 1;
-                  //  }
+                    }
                    
                 }
             }
@@ -82,5 +82,6 @@ public class PieceMoves {
             }
     }
     }
+    
    
 }

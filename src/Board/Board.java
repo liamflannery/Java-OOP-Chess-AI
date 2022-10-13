@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.Collections;
 import Moves.*;
 import Pieces.*;
+import Services.Printer;
 public class Board {
     Square[] squares = new Square[64];
     List<Piece> pieces = new ArrayList<Piece>();
@@ -37,6 +38,16 @@ public class Board {
              0, 0, 0, 0, 0, 0, 0, 0,
              1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
+        };
+        boardArray = new int[]{
+            -2,-3,0,0,-6,0,-3,-2,
+            -1,-1,-1,0,-5,-1,0,-1,
+            0,0,0,0,0,0,-1,0,
+            0,0,-4,0,0,-4,0,0,
+            0,0,0,-1,0,1,0,0,
+            0,0,0,1,0,0,0,0,
+            1,1,1,0,5,0,1,1,
+            2,3,4,0,6,4,3,2
         };
         moveHandler = new MoveHandler(boardArray, this);
         createPieces();
@@ -136,7 +147,10 @@ public class Board {
             for(Piece piece : pieces){
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
-                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), selectedPiece.hasMoved());
+                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), boardArray);
+                    System.out.println("potential squares:"); Printer.printArray(potentialSquares);
+                   // CheckFinder.findMoves(potentialSquares, boardArray, selectedPiece.getBoardPos());
+                //    System.out.println("after checkfind squares:"); Printer.printArray(potentialSquares);
                     paintSquares();
                     break;
                 }
@@ -156,8 +170,8 @@ public class Board {
             for(int i = 0; i < squares.length; i++){
                 if(squares[i].contains(new Point(x,y))){
                     if(potentialSquares[i] != 0){
-                        moveHandler.move(selectedPiece.getBoardPos(), i);
-                        printBoard();
+                        move(selectedPiece.getBoardPos(), i);
+                       // Printer.printArray(boardArray);
                     }
                 }
             }
@@ -189,7 +203,7 @@ public class Board {
     //visually display potential moves
     private void paintSquares() {
         for(int i = 0; i < squares.length; i++){
-            if(potentialSquares[i] == 1){
+            if(potentialSquares[i] != 0){
                 squares[i].highlight();
             }
             else{
@@ -197,36 +211,12 @@ public class Board {
             }
         }
     }
-    //prints board to the terminal
-    private void printBoard() {
-        int counter = 0;
-        List<String> rows = new ArrayList<String>();
-        String row = "";
-        for(int i = 0; i < boardArray.length; i++){
-            if(counter < 8){
-                if(boardArray[i] < 0){
-                    row += boardArray[i];
-                }
-                else{
-                    row += " " + boardArray[i];
-                }
-                counter++;
-            }
-            else{
-                rows.add(row);
-                if(boardArray[i] < 0){
-                    row = "" + boardArray[i];
-                }
-                else{
-                    row = " " + boardArray[i];
-                }
-                
-                counter = 1;
-            }
-            
-        }
-       for(String outRow : rows){
-        System.out.println(outRow);
-       }
+    //move piece from origin square to destination square, update visuals to reflect
+    public void move(int origin, int destination){
+        int piece = boardArray[origin];
+        boardArray[destination] = piece;
+        boardArray[origin] = 0;
+        updatePieces(origin, destination);
     }
+    
 }
