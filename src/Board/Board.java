@@ -4,18 +4,30 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.Collections;
 import Moves.*;
 import Pieces.*;
+
 import Services.Printer;
 public class Board {
     Square[] squares = new Square[64];
-    List<Piece> pieces = new ArrayList<Piece>();
+    // List<Piece> pieces = new ArrayList<Piece>();
+    List<Piece> blackPieces = new ArrayList<Piece>();
+    List<Piece> whitePieces = new ArrayList<Piece>();
+    List<Piece> allPieces;
+    List<Piece> currentPieces = whitePieces;
+    
     int[] boardArray;
     MoveHandler moveHandler;
     Piece selectedPiece;
     Consumer<Square> paintSquares;
     Consumer<Piece> paintPiece;
+    Competitor black;
+    Competitor white;
+    int turn = 1;
+    
     public Board(){
         /* 
             0 : empty
@@ -52,6 +64,7 @@ public class Board {
         moveHandler = new MoveHandler(boardArray, this);
         createPieces();
         createSquares();
+        allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
     //create squares
@@ -106,8 +119,11 @@ public class Board {
                 default:
                     break;
             }
-            if(addPiece != null){
-                pieces.add(addPiece);
+            if(addPiece != null && boardArray[i] < 0){
+                blackPieces.add(addPiece);
+            }
+            if(addPiece != null && boardArray[i] > 0){
+                whitePieces.add(addPiece);
             }
 
         }
@@ -127,7 +143,7 @@ public class Board {
         doToEachPiece(paintPiece, mousePos);
     }
     public void doToEachPiece(Consumer<Piece> func, Point mousePos) {
-        for(Piece piece: pieces){
+        for(Piece piece: allPieces){
             func.accept(piece);
         }
     }
@@ -144,13 +160,11 @@ public class Board {
     public void mousePressed(int x, int y) {
         Point mousePosition = new Point(x,y);
         if(selectedPiece == null){
-            for(Piece piece : pieces){
+            for(Piece piece : currentPieces){
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
                     potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), boardArray);
-                //    System.out.println("potential squares:"); Printer.printArray(potentialSquares);
                     CheckFinder.findMoves(potentialSquares, boardArray, selectedPiece.getBoardPos());
-                //    System.out.println("after checkfind squares:"); Printer.printArray(potentialSquares);
                     paintSquares();
                     break;
                 }
@@ -159,7 +173,7 @@ public class Board {
        
                
         if(selectedPiece != null){
-            Collections.swap(pieces, pieces.indexOf(selectedPiece), pieces.size() -1);
+            Collections.swap(allPieces, allPieces.indexOf(selectedPiece), allPieces.size() -1);
             selectedPiece.dragPiece();
         }
     }
@@ -171,7 +185,7 @@ public class Board {
                 if(squares[i].contains(new Point(x,y))){
                     if(potentialSquares[i] != 0){
                         move(selectedPiece.getBoardPos(), i);
-                       // Printer.printArray(boardArray);
+                        changeTurn();
                     }
                 }
             }
@@ -181,10 +195,21 @@ public class Board {
             paintSquares();
         }
     }
+    private void changeTurn() {
+        if(turn < 0){
+            currentPieces = whitePieces;
+        }
+        else{
+            currentPieces = blackPieces;
+        }
+        turn *= -1;
+        
+    }
+
     //move piece objects to reflect array 
     public void updatePieces(int origin, int destination) {
         removePiece(destination);
-        for(Piece piece : pieces){
+        for(Piece piece : allPieces){
             if(piece.getBoardPos() == origin){
                 piece.updatePos(destination);
                 break;
@@ -193,9 +218,9 @@ public class Board {
     }
     //delete piece at destination (handle captures)
     private void removePiece(int destination) {
-        for(Piece piece: pieces){
+        for(Piece piece: allPieces){
             if(piece.getBoardPos() == destination){
-                pieces.remove(piece);
+                allPieces.remove(piece);
                 break;
             }
         }

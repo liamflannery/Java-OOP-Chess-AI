@@ -9,6 +9,8 @@ import java.util.Optional;
 import Board.Board;
 public class Stage {
    Board board;
+   public int turn = 1;
+
     public Stage() {
         board = new Board();
     }
