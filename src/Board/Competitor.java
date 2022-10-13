@@ -13,7 +13,7 @@ public class Competitor {
     public void mousePressed(int x, int y){
 
     }
-    public void mouseReleased(){
+    public void mouseReleased(int x, int y){
         
     }
 }

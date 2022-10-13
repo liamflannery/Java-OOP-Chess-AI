@@ -14,18 +14,17 @@ public class Player extends Competitor{
     }
     //when mouse pressed, pick up piece under mouse, and find the pieces potential moves
     //^assuming there is a piece under the mouse, and the mouse isn't already holding a piece
-    int[] potentialSquares;
+    
     Piece selectedPiece;
     @Override
     public void mousePressed(int x, int y) {
-        System.out.println("mouse pressed");
         Point mousePosition = new Point(x,y);
         if(selectedPiece == null){
             for(Piece piece : myPieces){
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
-                    potentialSquares = board.moveHandler.findPieceMoves(selectedPiece.getBoardPos(), board.boardArray);
-                    CheckFinder.findMoves(potentialSquares, board.boardArray, selectedPiece.getBoardPos());
+                    board.potentialSquares = board.moveHandler.findPieceMoves(selectedPiece.getBoardPos(), board.boardArray);
+                    CheckFinder.findMoves(board.potentialSquares, board.boardArray, selectedPiece.getBoardPos());
                     board.paintSquares();
                     break;
                 }
@@ -44,7 +43,7 @@ public class Player extends Competitor{
         if(selectedPiece != null){
             for(int i = 0; i < board.squares.length; i++){
                 if(board.squares[i].contains(new Point(x,y))){
-                    if(potentialSquares[i] != 0){
+                    if(board.potentialSquares[i] != 0){
                         board.move(selectedPiece.getBoardPos(), i);
                         
                     }
@@ -52,7 +51,7 @@ public class Player extends Competitor{
             }
             selectedPiece.dropPiece();
             selectedPiece = null;
-            potentialSquares = new int[64];
+            board.potentialSquares = new int[64];
             board.paintSquares();
         }
     }

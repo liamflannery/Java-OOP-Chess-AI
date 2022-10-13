@@ -14,7 +14,7 @@ public class Stage {
    Competitor white;
    Competitor black;
     public Stage() {
-        board = new Board(white, black, turn);
+        board = new Board(turn);
     }
        
         

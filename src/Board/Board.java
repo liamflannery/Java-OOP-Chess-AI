@@ -29,7 +29,7 @@ public class Board {
     int turn;
     int[] potentialSquares;
     
-    public Board(Competitor white, Competitor black, int turn){
+    public Board(int turn){
         /* 
             0 : empty
             1 : pawn
@@ -63,8 +63,6 @@ public class Board {
             2,3,4,0,6,4,3,2
         };
         moveHandler = new MoveHandler(boardArray, this);
-        this.white = white;
-        this.black = black;
         this.turn = turn;
         createPieces();
         createSquares();
@@ -214,7 +212,6 @@ public class Board {
     }
 
     public void mousePressed(int x, int y) {
-        System.out.println(white);
         if(turn > 0){
             white.mousePressed(x, y);
         }
@@ -225,10 +222,10 @@ public class Board {
 
     public void mouseReleased(int x, int y) {
         if(turn > 0){
-            white.mouseReleased();
+            white.mouseReleased(x,y);
         }
         else{
-            black.mouseReleased();
+            black.mouseReleased(x,y);
         }
     }
     
