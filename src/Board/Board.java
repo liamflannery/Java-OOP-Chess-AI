@@ -26,9 +26,10 @@ public class Board {
     Consumer<Piece> paintPiece;
     Competitor black;
     Competitor white;
-    int turn = 1;
+    int turn;
+    int[] potentialSquares;
     
-    public Board(){
+    public Board(Competitor white, Competitor black, int turn){
         /* 
             0 : empty
             1 : pawn
@@ -62,8 +63,13 @@ public class Board {
             2,3,4,0,6,4,3,2
         };
         moveHandler = new MoveHandler(boardArray, this);
+        this.white = white;
+        this.black = black;
+        this.turn = turn;
         createPieces();
         createSquares();
+        white = new Player(whitePieces, this);
+        black = new Player(blackPieces, this);
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
@@ -154,47 +160,7 @@ public class Board {
       }
     
 
-    //when mouse pressed, pick up piece under mouse, and find the pieces potential moves
-    //^assuming there is a piece under the mouse, and the mouse isn't already holding a piece
-    int[] potentialSquares;
-    public void mousePressed(int x, int y) {
-        Point mousePosition = new Point(x,y);
-        if(selectedPiece == null){
-            for(Piece piece : currentPieces){
-                if(piece.pointAtPiece(mousePosition)){
-                    selectedPiece = piece;
-                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), boardArray);
-                    CheckFinder.findMoves(potentialSquares, boardArray, selectedPiece.getBoardPos());
-                    paintSquares();
-                    break;
-                }
-            }
-        }
-       
-               
-        if(selectedPiece != null){
-            Collections.swap(allPieces, allPieces.indexOf(selectedPiece), allPieces.size() -1);
-            selectedPiece.dragPiece();
-        }
-    }
-
-   //when mouse released, place piece if it is over a square it can move to 
-    public void mouseReleased(int x, int y) {
-        if(selectedPiece != null){
-            for(int i = 0; i < squares.length; i++){
-                if(squares[i].contains(new Point(x,y))){
-                    if(potentialSquares[i] != 0){
-                        move(selectedPiece.getBoardPos(), i);
-                        changeTurn();
-                    }
-                }
-            }
-            selectedPiece.dropPiece();
-            selectedPiece = null;
-            potentialSquares = new int[64];
-            paintSquares();
-        }
-    }
+    
     private void changeTurn() {
         if(turn < 0){
             currentPieces = whitePieces;
@@ -221,12 +187,14 @@ public class Board {
         for(Piece piece: allPieces){
             if(piece.getBoardPos() == destination){
                 allPieces.remove(piece);
+                blackPieces.remove(piece);
+                whitePieces.remove(piece);
                 break;
             }
         }
     }
     //visually display potential moves
-    private void paintSquares() {
+    public void paintSquares() {
         for(int i = 0; i < squares.length; i++){
             if(potentialSquares[i] != 0){
                 squares[i].highlight();
@@ -242,6 +210,26 @@ public class Board {
         boardArray[destination] = piece;
         boardArray[origin] = 0;
         updatePieces(origin, destination);
+        changeTurn();
+    }
+
+    public void mousePressed(int x, int y) {
+        System.out.println(white);
+        if(turn > 0){
+            white.mousePressed(x, y);
+        }
+        else{
+            black.mousePressed(x, y);
+        }
+    }
+
+    public void mouseReleased(int x, int y) {
+        if(turn > 0){
+            white.mouseReleased();
+        }
+        else{
+            black.mouseReleased();
+        }
     }
     
 }
