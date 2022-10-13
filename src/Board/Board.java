@@ -148,8 +148,8 @@ public class Board {
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
                     potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), boardArray);
-                    System.out.println("potential squares:"); Printer.printArray(potentialSquares);
-                   // CheckFinder.findMoves(potentialSquares, boardArray, selectedPiece.getBoardPos());
+                //    System.out.println("potential squares:"); Printer.printArray(potentialSquares);
+                    CheckFinder.findMoves(potentialSquares, boardArray, selectedPiece.getBoardPos());
                 //    System.out.println("after checkfind squares:"); Printer.printArray(potentialSquares);
                     paintSquares();
                     break;

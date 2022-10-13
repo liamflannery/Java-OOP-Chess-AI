@@ -66,8 +66,7 @@ public class PieceMoves {
     public void vetMove(){
         if(move >= 0 && move < boardArray.length){
             if(boardArray[move] != 0){
-                if(boardArray[move] * boardPos < 0){
-                    System.out.println(boardPos);
+                if(boardArray[move] * boardArray[boardPos] < 0){
                     if(Math.abs(boardArray[move]) == 6){
                         moves[move] = 2;
                     }

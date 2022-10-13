@@ -18,9 +18,9 @@ public final class CheckFinder {
                 testBoard[i] = currentPiece;
                 
                 for(int j = 0; j < testBoard.length; j++){
-                    if(boardPos * testBoard[j] < 0){
+                    if(currentPiece * testBoard[j] < 0){
                         int[] checkBoard = checkMoveHandler.findPieceMoves(j, testBoard);
-                        Printer.printArray(checkBoard);
+                        //Printer.printArray(checkBoard);
                         if(willCheck(checkBoard)){
                             System.out.println("found a check");
                             potentialSquares[i] = 0;
