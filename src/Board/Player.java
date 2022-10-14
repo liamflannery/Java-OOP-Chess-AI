@@ -10,6 +10,7 @@ public class Player extends Competitor{
 
     public Player(List<Piece> myPieces, Board board) {
         super(myPieces, board);
+        isPlayer = true;
         //TODO Auto-generated constructor stub
     }
     //when mouse pressed, pick up piece under mouse, and find the pieces potential moves

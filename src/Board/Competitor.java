@@ -6,6 +6,7 @@ import java.awt.Point;
 public class Competitor {
     List<Piece> myPieces;
     Board board;
+    boolean isPlayer;
     public Competitor(List<Piece> myPieces, Board board){
         this.myPieces = myPieces;
         this.board = board;
@@ -15,5 +16,11 @@ public class Competitor {
     }
     public void mouseReleased(int x, int y){
         
+    }
+    public void findMove(){
+
+    }
+    public boolean isPlayer(){
+        return isPlayer;
     }
 }

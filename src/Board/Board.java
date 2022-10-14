@@ -66,7 +66,7 @@ public class Board {
         this.turn = turn;
         createPieces();
         createSquares();
-        white = new Player(whitePieces, this);
+        white = new Comp(whitePieces, this);
         black = new Comp(blackPieces, this);
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
@@ -142,10 +142,20 @@ public class Board {
         paintPiece = piece -> {
             piece.paint(g, mousePos);
         };
-        
+        //compMove();
+
         doToEachSquare(paintSquares);
         doToEachPiece(paintPiece, mousePos);
     }
+    private void compMove() {
+        if(!white.isPlayer && turn > 0){
+            white.findMove();
+        }
+        if(!black.isPlayer && turn < 0){
+            black.findMove();
+        }
+    }
+
     public void doToEachPiece(Consumer<Piece> func, Point mousePos) {
         for(Piece piece: allPieces){
             func.accept(piece);
@@ -218,6 +228,7 @@ public class Board {
         else{
             black.mousePressed(x, y);
         }
+        compMove();
     }
 
     public void mouseReleased(int x, int y) {
