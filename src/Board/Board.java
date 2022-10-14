@@ -4,19 +4,32 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.Collections;
 import Moves.*;
 import Pieces.*;
+
 import Services.Printer;
 public class Board {
     Square[] squares = new Square[64];
-    List<Piece> pieces = new ArrayList<Piece>();
+    // List<Piece> pieces = new ArrayList<Piece>();
+    List<Piece> blackPieces = new ArrayList<Piece>();
+    List<Piece> whitePieces = new ArrayList<Piece>();
+    List<Piece> allPieces;
+    List<Piece> currentPieces = whitePieces;
+    
     int[] boardArray;
     MoveHandler moveHandler;
     Piece selectedPiece;
     Consumer<Square> paintSquares;
     Consumer<Piece> paintPiece;
-    public Board(){
+    Competitor black;
+    Competitor white;
+    int turn;
+    int[] potentialSquares;
+    
+    public Board(int turn){
         /* 
             0 : empty
             1 : pawn
@@ -39,19 +52,23 @@ public class Board {
              1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
-        boardArray = new int[]{
-            -2,-3,0,0,-6,0,-3,-2,
-            -1,-1,-1,0,-5,-1,0,-1,
-            0,0,0,0,0,0,-1,0,
-            0,0,-4,0,0,-4,0,0,
-            0,0,0,-1,0,1,0,0,
-            0,0,0,1,0,0,0,0,
-            1,1,1,0,5,0,1,1,
-            2,3,4,0,6,4,3,2
-        };
+        // boardArray = new int[]{
+        //     -2,-3,0,0,-6,0,-3,-2,
+        //     -1,-1,-1,0,-5,-1,0,-1,
+        //     0,0,0,0,0,0,-1,0,
+        //     0,0,-4,0,0,-4,0,0,
+        //     0,0,0,-1,0,1,0,0,
+        //     0,0,0,1,0,0,0,0,
+        //     1,1,1,0,5,0,1,1,
+        //     2,3,4,0,6,4,3,2
+        // };
         moveHandler = new MoveHandler(boardArray, this);
+        this.turn = turn;
         createPieces();
         createSquares();
+        white = new Comp(whitePieces, this);
+        black = new Comp(blackPieces, this);
+        allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
     //create squares
@@ -106,8 +123,11 @@ public class Board {
                 default:
                     break;
             }
-            if(addPiece != null){
-                pieces.add(addPiece);
+            if(addPiece != null && boardArray[i] < 0){
+                blackPieces.add(addPiece);
+            }
+            if(addPiece != null && boardArray[i] > 0){
+                whitePieces.add(addPiece);
             }
 
         }
@@ -122,12 +142,22 @@ public class Board {
         paintPiece = piece -> {
             piece.paint(g, mousePos);
         };
-        
+        compMove();
+
         doToEachSquare(paintSquares);
         doToEachPiece(paintPiece, mousePos);
     }
+    private void compMove() {
+        if(!white.isPlayer && turn > 0){
+            white.findMove();
+        }
+        else if(!black.isPlayer && turn < 0){
+            black.findMove();
+        }
+    }
+
     public void doToEachPiece(Consumer<Piece> func, Point mousePos) {
-        for(Piece piece: pieces){
+        for(Piece piece: allPieces){
             func.accept(piece);
         }
     }
@@ -138,53 +168,22 @@ public class Board {
       }
     
 
-    //when mouse pressed, pick up piece under mouse, and find the pieces potential moves
-    //^assuming there is a piece under the mouse, and the mouse isn't already holding a piece
-    int[] potentialSquares;
-    public void mousePressed(int x, int y) {
-        Point mousePosition = new Point(x,y);
-        if(selectedPiece == null){
-            for(Piece piece : pieces){
-                if(piece.pointAtPiece(mousePosition)){
-                    selectedPiece = piece;
-                    potentialSquares = moveHandler.findPieceMoves(selectedPiece.getBoardPos(), boardArray);
-                //    System.out.println("potential squares:"); Printer.printArray(potentialSquares);
-                    CheckFinder.findMoves(potentialSquares, boardArray, selectedPiece.getBoardPos());
-                //    System.out.println("after checkfind squares:"); Printer.printArray(potentialSquares);
-                    paintSquares();
-                    break;
-                }
-            }
+    
+    private void changeTurn() {
+        if(turn < 0){
+            currentPieces = whitePieces;
         }
-       
-               
-        if(selectedPiece != null){
-            Collections.swap(pieces, pieces.indexOf(selectedPiece), pieces.size() -1);
-            selectedPiece.dragPiece();
+        else{
+            currentPieces = blackPieces;
         }
+        turn *= -1;
+        
     }
 
-   //when mouse released, place piece if it is over a square it can move to 
-    public void mouseReleased(int x, int y) {
-        if(selectedPiece != null){
-            for(int i = 0; i < squares.length; i++){
-                if(squares[i].contains(new Point(x,y))){
-                    if(potentialSquares[i] != 0){
-                        move(selectedPiece.getBoardPos(), i);
-                       // Printer.printArray(boardArray);
-                    }
-                }
-            }
-            selectedPiece.dropPiece();
-            selectedPiece = null;
-            potentialSquares = new int[64];
-            paintSquares();
-        }
-    }
     //move piece objects to reflect array 
     public void updatePieces(int origin, int destination) {
         removePiece(destination);
-        for(Piece piece : pieces){
+        for(Piece piece : allPieces){
             if(piece.getBoardPos() == origin){
                 piece.updatePos(destination);
                 break;
@@ -193,15 +192,17 @@ public class Board {
     }
     //delete piece at destination (handle captures)
     private void removePiece(int destination) {
-        for(Piece piece: pieces){
+        for(Piece piece: allPieces){
             if(piece.getBoardPos() == destination){
-                pieces.remove(piece);
+                allPieces.remove(piece);
+                blackPieces.remove(piece);
+                whitePieces.remove(piece);
                 break;
             }
         }
     }
     //visually display potential moves
-    private void paintSquares() {
+    public void paintSquares() {
         for(int i = 0; i < squares.length; i++){
             if(potentialSquares[i] != 0){
                 squares[i].highlight();
@@ -217,6 +218,26 @@ public class Board {
         boardArray[destination] = piece;
         boardArray[origin] = 0;
         updatePieces(origin, destination);
+        changeTurn();
+    }
+
+    public void mousePressed(int x, int y) {
+        if(turn > 0){
+            white.mousePressed(x, y);
+        }
+        else{
+            black.mousePressed(x, y);
+        }
+        
+    }
+
+    public void mouseReleased(int x, int y) {
+        if(turn > 0){
+            white.mouseReleased(x,y);
+        }
+        else{
+            black.mouseReleased(x,y);
+        }
     }
     
 }

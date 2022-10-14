@@ -7,8 +7,9 @@ import Services.Printer;
 public final class CheckFinder {
     static int[] moves;
     static MoveHandler checkMoveHandler;
+    static int[] testBoard;
     public static void findMoves(int[] potentialSquares, int[] boardArray, int boardPos) {
-        int[] testBoard = boardArray.clone();
+        testBoard = boardArray.clone();
         int currentPiece = boardArray[boardPos];
         
         for(int i = 0; i < potentialSquares.length; i++){
@@ -20,9 +21,7 @@ public final class CheckFinder {
                 for(int j = 0; j < testBoard.length; j++){
                     if(currentPiece * testBoard[j] < 0){
                         int[] checkBoard = checkMoveHandler.findPieceMoves(j, testBoard);
-                        //Printer.printArray(checkBoard);
                         if(willCheck(checkBoard)){
-                            System.out.println("found a check");
                             potentialSquares[i] = 0;
                         }
                     }
