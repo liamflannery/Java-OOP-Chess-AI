@@ -66,8 +66,8 @@ public class Board {
         this.turn = turn;
         createPieces();
         createSquares();
-        white = new Comp(whitePieces, this);
-        black = new Comp(blackPieces, this);
+        white = new Player(whitePieces, this);
+        black = new Player(blackPieces, this);
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
@@ -181,14 +181,31 @@ public class Board {
     }
 
     //move piece objects to reflect array 
-    public void updatePieces(int origin, int destination) {
+    public void updatePieces(int origin, int destination, int type) {
         removePiece(destination);
-        for(Piece piece : allPieces){
-            if(piece.getBoardPos() == origin){
-                piece.updatePos(destination);
-                break;
+        if(type == 3){
+            removePiece(origin);
+            Piece promotedQueen;
+            if(turn < 0){
+                promotedQueen = new Queen(destination, false, "queen");
+                blackPieces.add(promotedQueen);
+                allPieces.add(promotedQueen);
+            }
+            else{
+                promotedQueen = new Queen(destination, true, "queen");
+                whitePieces.add(promotedQueen);
+                allPieces.add(promotedQueen);
             }
         }
+        else{
+            for(Piece piece : allPieces){
+                if(piece.getBoardPos() == origin){
+                    piece.updatePos(destination);
+                    break;
+                }
+            }
+        }
+        
     }
     //delete piece at destination (handle captures)
     private void removePiece(int destination) {
@@ -213,11 +230,15 @@ public class Board {
         }
     }
     //move piece from origin square to destination square, update visuals to reflect
-    public void move(int origin, int destination){
+    public void move(int origin, int destination, int moveType){
         int piece = boardArray[origin];
+        if(moveType == 3){
+            piece = 5 * piece;
+        }
+        
         boardArray[destination] = piece;
         boardArray[origin] = 0;
-        updatePieces(origin, destination);
+        updatePieces(origin, destination, moveType);
         changeTurn();
     }
 

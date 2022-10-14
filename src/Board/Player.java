@@ -45,7 +45,7 @@ public class Player extends Competitor{
             for(int i = 0; i < board.squares.length; i++){
                 if(board.squares[i].contains(new Point(x,y))){
                     if(board.potentialSquares[i] != 0){
-                        board.move(selectedPiece.getBoardPos(), i);
+                        board.move(selectedPiece.getBoardPos(), i, board.potentialSquares[i]);
                         
                     }
                 }

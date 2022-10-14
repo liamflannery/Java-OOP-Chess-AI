@@ -27,10 +27,10 @@ public class Comp extends Competitor{
         }
         int move = random.nextInt(board.potentialSquares.length);
         if(board.potentialSquares.length > 0){
-            while(board.potentialSquares[move] != 1){
+            while(board.potentialSquares[move] < 1){
                 move = random.nextInt(board.potentialSquares.length);
             }
-            board.move(selectedPiece.getBoardPos(), move);
+            board.move(selectedPiece.getBoardPos(), move, board.potentialSquares[move]);
             selectedPiece = null;
             board.potentialSquares = new int[64];
         }

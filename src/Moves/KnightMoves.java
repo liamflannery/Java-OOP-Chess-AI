@@ -64,7 +64,7 @@ public class KnightMoves extends PieceMoves{
                     
             }
             move = boardPos + inc;
-            vetMove();
+            vetMove(1);
         }
     }
 }

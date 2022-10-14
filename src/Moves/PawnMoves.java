@@ -42,10 +42,11 @@ public class PawnMoves extends PieceMoves{
         if(!(hasMoved())){
             move = boardPos - 16 * boardArray[boardPos];
             if(boardArray[move] == 0 && boardArray[boardPos - 8 * boardArray[boardPos]] == 0){
-                vetMove();
+                vetMove(1);
             }
             
         }
+
     }
     private boolean hasMoved(){
         return (upDirection > 0 && boardPos > 15 || upDirection < 0 && boardPos < 48);

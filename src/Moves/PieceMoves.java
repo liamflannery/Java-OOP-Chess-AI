@@ -24,7 +24,13 @@ public class PieceMoves {
             if(move < boardArray.length && move >= 0 && numSquaresToEdge[boardPos][i] > 0){
                 if(!(Math.abs(boardArray[boardPos]) == 1 && boardArray[move] != 0 && i < 3)){
                     if(!(Math.abs(boardArray[boardPos]) == 1 && boardArray[move] == 0 && i > 3))
-                        vetMove();
+                        if((Math.abs(boardArray[boardPos]) == 1) && ((move > 56) || (move < 8))){
+                            vetMove(3);
+                        }
+                        else{
+                            vetMove(1);
+                        }
+                        
                 }
             }
             
@@ -40,7 +46,7 @@ public class PieceMoves {
                 if(move < boardArray.length && move >= 0){
                     if(boardArray[move] != 0){
                         if(boardArray[move] * boardArray[boardPos] <= 0){
-                            vetMove();  
+                            vetMove(1);  
                             break;
                         }
                         else{
@@ -48,7 +54,7 @@ public class PieceMoves {
                         }
                     }
                     else{
-                        vetMove();
+                        vetMove(1);
                     }
                 }
                                       
@@ -63,7 +69,7 @@ public class PieceMoves {
 
     //check if move is in range of board
     //check if move will take opponent or will move to friendly square
-    public void vetMove(){
+    public void vetMove(int type){
         if(move >= 0 && move < boardArray.length){
             if(boardArray[move] != 0){
                 if(boardArray[move] * boardArray[boardPos] < 0){
@@ -71,13 +77,13 @@ public class PieceMoves {
                         moves[move] = 2;
                     }
                     else{
-                        moves[move] = 1;
+                        moves[move] = type;
                     }
                    
                 }
             }
             else{
-                moves[move] = 1;
+                moves[move] = type;
             }
     }
     }
