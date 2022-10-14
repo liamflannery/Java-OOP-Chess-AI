@@ -67,7 +67,7 @@ public class Board {
         createPieces();
         createSquares();
         white = new Player(whitePieces, this);
-        black = new Player(blackPieces, this);
+        black = new Comp(blackPieces, this);
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
