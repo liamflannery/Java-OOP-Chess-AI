@@ -52,16 +52,16 @@ public class Board {
              1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
-        boardArray = new int[]{
-            -2,-3,0,0,-6,0,-3,-2,
-            -1,-1,-1,0,-5,-1,0,-1,
-            0,0,0,0,0,0,-1,0,
-            0,0,-4,0,0,-4,0,0,
-            0,0,0,-1,0,1,0,0,
-            0,0,0,1,0,0,0,0,
-            1,1,1,0,5,0,1,1,
-            2,3,4,0,6,4,3,2
-        };
+        // boardArray = new int[]{
+        //     -2,-3,0,0,-6,0,-3,-2,
+        //     -1,-1,-1,0,-5,-1,0,-1,
+        //     0,0,0,0,0,0,-1,0,
+        //     0,0,-4,0,0,-4,0,0,
+        //     0,0,0,-1,0,1,0,0,
+        //     0,0,0,1,0,0,0,0,
+        //     1,1,1,0,5,0,1,1,
+        //     2,3,4,0,6,4,3,2
+        // };
         moveHandler = new MoveHandler(boardArray, this);
         this.turn = turn;
         createPieces();
@@ -142,7 +142,7 @@ public class Board {
         paintPiece = piece -> {
             piece.paint(g, mousePos);
         };
-        //compMove();
+        compMove();
 
         doToEachSquare(paintSquares);
         doToEachPiece(paintPiece, mousePos);
@@ -151,7 +151,7 @@ public class Board {
         if(!white.isPlayer && turn > 0){
             white.findMove();
         }
-        if(!black.isPlayer && turn < 0){
+        else if(!black.isPlayer && turn < 0){
             black.findMove();
         }
     }
@@ -228,7 +228,7 @@ public class Board {
         else{
             black.mousePressed(x, y);
         }
-        compMove();
+        
     }
 
     public void mouseReleased(int x, int y) {
