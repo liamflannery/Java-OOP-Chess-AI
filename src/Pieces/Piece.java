@@ -42,13 +42,14 @@ public class Piece{
         boardPos = inBoardPos;
         isWhite = white;
         pieceName = inPieceName;
+        assignImage();
         placePieceAtSquare();
         
         
     }
     
     
-    public void paint(Graphics g, Point mousePos) {
+    private void assignImage() {
         if(isWhite){
             try{
                 image = ImageIO.read(new File(URL+"white_" + pieceName + ".png"));
@@ -65,20 +66,21 @@ public class Piece{
                     System.out.println("Failed to load: " + URL+ "black_" + pieceName + ".png");
                 }  
         }
-        draw(g, mousePos);
+    }
+
+
+    public void paint(Graphics g, Point mousePos) {
+        
+        if(drag){
+            x = mousePos.x - pieceService[5]/2;
+            y = mousePos.y - pieceService[5]/2;
+        }
+        g.drawImage(image, x, y, pieceService[5], pieceService[5], null);
        
     }
    
                        
-    public void draw(Graphics g, Point mousePos){
-        if(drag){
-            x = mousePos.x - 40;
-            y = mousePos.y - 40;
-        }
-        g.drawImage(image, x, y, pieceService[5], pieceService[5], null);
-      
-        
-    }
+
     @Override
     public String toString() {
         // TODO Auto-generated method stub
