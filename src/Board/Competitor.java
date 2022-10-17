@@ -17,7 +17,8 @@ public class Competitor {
     public void mouseReleased(int x, int y){
         
     }
-    public void findMove(){
+    public boolean findMove(){
+        return true;
 
     }
     public boolean isPlayer(){

@@ -1,5 +1,6 @@
 package Board;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -12,31 +13,41 @@ public class Comp extends Competitor{
         super(myPieces, board);
         isPlayer = false;
         random = new Random();
-        //TODO Auto-generated constructor stub
     }
     Piece selectedPiece;
-    
-    public void findMove(){
-        selectedPiece = myPieces.get(random.nextInt(myPieces.size()));
+    List<Piece> myPiecesToCheck;
+    public boolean findMove(){
+        myPiecesToCheck = new ArrayList<Piece>(myPieces);
+        selectedPiece = myPiecesToCheck.get(random.nextInt(myPieces.size()));
         board.potentialSquares = board.moveHandler.findPieceMoves(selectedPiece.getBoardPos(), board.boardArray);
         CheckFinder.findMoves(board.potentialSquares, board.boardArray, selectedPiece.getBoardPos());
-        while(!hasMove(board.potentialSquares)){
-            selectedPiece = myPieces.get(random.nextInt(myPieces.size()));
+        while(!hasMove(board.potentialSquares) && myPiecesToCheck.size() > 0){
+            selectedPiece = myPiecesToCheck.get(random.nextInt(myPiecesToCheck.size()));
             board.potentialSquares = board.moveHandler.findPieceMoves(selectedPiece.getBoardPos(), board.boardArray);
             CheckFinder.findMoves(board.potentialSquares, board.boardArray, selectedPiece.getBoardPos());
+            myPiecesToCheck.remove(selectedPiece);
         }
-        int move = random.nextInt(board.potentialSquares.length);
-        if(board.potentialSquares.length > 0){
-            while(board.potentialSquares[move] < 1){
-                move = random.nextInt(board.potentialSquares.length);
-            }
-            board.move(selectedPiece.getBoardPos(), move, board.potentialSquares[move]);
-            selectedPiece = null;
-            board.potentialSquares = new int[64];
+        if(!hasMove(board.potentialSquares)){
+            System.out.println("game over");
+            return false;
         }
         else{
-            System.out.println("done");
+            int move = random.nextInt(board.potentialSquares.length);
+            if(board.potentialSquares.length > 0){
+                while(board.potentialSquares[move] < 1){
+                    move = random.nextInt(board.potentialSquares.length);
+                }
+                board.move(selectedPiece.getBoardPos(), move, board.potentialSquares[move]);
+                selectedPiece = null;
+                board.potentialSquares = new int[64];
+                return true;
+            }
+            else{
+                System.out.println("done");
+                return false;
+            }
         }
+        
         
         
                
@@ -49,7 +60,7 @@ public class Comp extends Competitor{
 
     private boolean hasMove(int[] squares) {
         for(int i = 0; i < squares.length; i++){
-            if(squares[i] == 1){
+            if(squares[i] > 0){
                 return true;
             }
         }

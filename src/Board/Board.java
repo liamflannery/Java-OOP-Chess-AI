@@ -70,8 +70,8 @@ public class Board {
         this.turn = turn;
         createPieces();
         createSquares();
-        white = new Player(whitePieces, this);
-        black = new Player(blackPieces, this);
+        white = new Comp(whitePieces, this);
+        black = new Comp(blackPieces, this);
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
@@ -138,6 +138,7 @@ public class Board {
     }
    
     //paint pieces and squares
+    boolean gameContinue = true;
     public void paint(Graphics g, Point mousePos) {
         paintSquares = square -> {
             square.paint(g, mousePos);
@@ -146,18 +147,25 @@ public class Board {
         paintPiece = piece -> {
             piece.paint(g, mousePos);
         };
-        compMove();
+        if(gameContinue){
+            gameContinue = compMove();
+        }
+        else{
+            white = new Player(whitePieces, this);
+            black = new Player(blackPieces, this);
+        }
 
         doToEachSquare(paintSquares);
         doToEachPiece(paintPiece, mousePos);
     }
-    private void compMove() {
+    private boolean compMove() {
         if(!white.isPlayer && turn > 0){
-            white.findMove();
+            return white.findMove();
         }
         else if(!black.isPlayer && turn < 0){
-            black.findMove();
+            return black.findMove();
         }
+        return false;
     }
 
     public void doToEachPiece(Consumer<Piece> func, Point mousePos) {
