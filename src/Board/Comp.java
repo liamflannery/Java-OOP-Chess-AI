@@ -59,11 +59,11 @@ public class Comp extends Competitor{
     }
 
 
-    public int score Minimax(Node currentNode, int depth, boolean white){
-        if(depth == 0 || !currentNode.hasMoves()){
+    // public int score Minimax(Node currentNode, int depth, boolean white){
+    //     if(depth == 0 || !currentNode.hasMoves()){
             
-        }
-    }
+    //     }
+    // }
 
 
     private boolean hasMove(int[] squares) {
