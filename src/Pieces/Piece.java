@@ -102,8 +102,8 @@ public class Piece{
     //calculates the row and column to place piece
     private void placePieceAtSquare(){
         pieceService = Services.IndexToPos.Calculate(boardPos);
-        x = pieceService[2] + pieceService[4]/6;
-        y = pieceService[3] + pieceService[4]/6;
+        x = pieceService[2];
+        y = pieceService[3];
         imgPoint = new Point(x,y);
         bounds = new Rectangle(imgPoint, new Dimension(pieceService[5], pieceService[5]));
     }

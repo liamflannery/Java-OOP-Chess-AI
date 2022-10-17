@@ -4,7 +4,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import Services.Values;
 
 import java.awt.Color;
@@ -17,14 +23,18 @@ public class Square extends Rectangle{
     int size;
     int[] indexService;
     Rectangle bounds;
+    boolean lightSquare;
+    private BufferedImage image;
+    String URL = "img/";
     public Square(int pos){
     
         squareNumber = pos;
         indexService = Services.IndexToPos.Calculate(squareNumber);
         this.size = indexService[4];
-        
         setPosition();
         setColour();
+        
+
         
     }
 
@@ -37,18 +47,38 @@ public class Square extends Rectangle{
     }
     void setColour(){
         if((row + column) % 2 == 0){
-            color = (Color) Values.valueOf("Light Square");
+            lightSquare = true;
         }
         else{
-            color = (Color) Values.valueOf("Dark Square");
+            lightSquare = false;
+        }
+        if(lightSquare){
+            try{
+                image = ImageIO.read(new File(URL+"light_square.png"));
+                }
+            catch(IOException e){
+                    System.out.println("Failed to load: " + URL+ "light_square.png");
+                }
+        }
+        else{
+            try{
+                image = ImageIO.read(new File(URL+"dark_square.png"));
+                }
+            catch(IOException e){
+                    System.out.println("Failed to load: " + URL+ "dark_square.png");
+                }
         }
     }
-    void paint(Graphics g, Point mousePos) {
-        g.setColor(color);
-        g.fillRect(x,y,size,size);
-        g.setColor(Color.BLACK);
-        g.drawRect(x,y,size,size);
+    public void paint(Graphics g, Point mousePos) {
+
+   
+        
+        g.drawImage(image, x, y, size, size, null);
+       
     }
+   
+                       
+
 
     public boolean contains(Point p) {
         if (p != null) {
@@ -65,7 +95,22 @@ public class Square extends Rectangle{
     }
 
     public void highlight() {
-        color = (Color) Values.valueOf("Highlight");
+        if(lightSquare){
+            try{
+                image = ImageIO.read(new File(URL+"light_square_highlight.png"));
+                }
+            catch(IOException e){
+                    System.out.println("Failed to load: " + URL+ "light_square_highlight.png");
+                }
+        }
+        else{
+            try{
+                image = ImageIO.read(new File(URL+"dark_square_highlight.png"));
+                }
+            catch(IOException e){
+                    System.out.println("Failed to load: " + URL+ "dark_square_highlight.png");
+                }
+        }
     }
 
     public void unHighlight() {

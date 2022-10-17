@@ -13,7 +13,7 @@ public class Values {
         valuesDict.put("Dark Square", new Color(93, 115, 126));
         valuesDict.put("Highlight", new Color(127,198,164));
         valuesDict.put("Square Size", 100);
-        valuesDict.put("Piece Size", 65);
+        valuesDict.put("Piece Size", 100);
 
 
         return valuesDict.get(input);
