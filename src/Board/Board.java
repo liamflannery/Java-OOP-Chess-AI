@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import Evaluation.BoardScore;
+
 import java.util.Collections;
 import Moves.*;
 import Pieces.*;
@@ -62,6 +65,7 @@ public class Board {
         //     1,1,1,0,5,0,1,1,
         //     2,3,4,0,6,4,3,2
         // };
+        
         moveHandler = new MoveHandler(boardArray, this);
         this.turn = turn;
         createPieces();
@@ -238,6 +242,7 @@ public class Board {
         
         boardArray[destination] = piece;
         boardArray[origin] = 0;
+        System.out.println(BoardScore.calculate(boardArray));
         updatePieces(origin, destination, moveType);
         changeTurn();
     }
