@@ -37,7 +37,7 @@ public class Comp extends Competitor{
                 while(board.potentialSquares[move] < 1){
                     move = random.nextInt(board.potentialSquares.length);
                 }
-                board.move(selectedPiece.getBoardPos(), move, board.potentialSquares[move]);
+                board.move(selectedPiece.getBoardPos(), move, board.potentialSquares[move], board.boardArray);
                 selectedPiece = null;
                 board.potentialSquares = new int[64];
                 return true;
@@ -58,6 +58,14 @@ public class Comp extends Competitor{
                     
     }
 
+
+    public int score Minimax(Node currentNode, int depth, boolean white){
+        if(depth == 0 || !currentNode.hasMoves()){
+            
+        }
+    }
+
+
     private boolean hasMove(int[] squares) {
         for(int i = 0; i < squares.length; i++){
             if(squares[i] > 0){
@@ -68,3 +76,5 @@ public class Comp extends Competitor{
     }
     
 }
+
+

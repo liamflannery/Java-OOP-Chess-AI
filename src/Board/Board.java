@@ -242,17 +242,22 @@ public class Board {
         }
     }
     //move piece from origin square to destination square, update visuals to reflect
-    public void move(int origin, int destination, int moveType){
-        int piece = boardArray[origin];
+    public void move(int origin, int destination, int moveType, int[] inBoard){
+       
+        int piece = inBoard[origin];
         if(moveType == 3){
             piece = 5 * piece;
         }
         
-        boardArray[destination] = piece;
-        boardArray[origin] = 0;
-        System.out.println(BoardScore.calculate(boardArray));
-        updatePieces(origin, destination, moveType);
-        changeTurn();
+        inBoard[destination] = piece;
+        inBoard[origin] = 0;
+
+        if(inBoard == boardArray){
+            System.out.println(BoardScore.calculate(boardArray));
+            updatePieces(origin, destination, moveType);
+            changeTurn();
+        }
+
     }
 
     public void mousePressed(int x, int y) {
