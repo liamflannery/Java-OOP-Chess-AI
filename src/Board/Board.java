@@ -45,15 +45,26 @@ public class Board {
             + : white 
         */
         //set up board
+        // boardArray = new int[]{
+        //     -2,-3,-4,-5,-6,-4,-3,-2,
+        //     -1,-1,-1,-1,-1,-1,-1,-1,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      1, 1, 1, 1, 1, 1, 1, 1,
+        //      2, 3, 4, 5, 6, 4, 3, 2
+        // };
+
         boardArray = new int[]{
-            -2,-3,-4,-5,-6,-4,-3,-2,
-            -1,-1,-1,-1,-1,-1,-1,-1,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             2, 3, 4, 5, 6, 4, 3, 2
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, -1, 0, 0, 0, 0, 0,
+            0, 0, 0, -5, 0, 0, 0, 0,
+            0, 0, 0, 0, 1, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 1, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0
         };
         // boardArray = new int[]{
         //     -2,-3,0,0,-6,0,-3,-2,
@@ -70,8 +81,8 @@ public class Board {
         this.turn = turn;
         createPieces();
         createSquares();
-        white = new Comp(whitePieces, this);
-        black = new Comp(blackPieces, this);
+        white = new Comp(whitePieces, this, true);
+        black = new Comp(blackPieces, this, false);
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
@@ -147,13 +158,13 @@ public class Board {
         paintPiece = piece -> {
             piece.paint(g, mousePos);
         };
-        if(gameContinue){
-            gameContinue = compMove();
-        }
-        else{
-            white = new Player(whitePieces, this);
-            black = new Player(blackPieces, this);
-        }
+        // if(gameContinue){
+        //     gameContinue = compMove();
+        // }
+        // else{
+        //     white = new Player(whitePieces, this);
+        //     black = new Player(blackPieces, this);
+        // }
 
         doToEachSquare(paintSquares);
         doToEachPiece(paintPiece, mousePos);
@@ -253,7 +264,6 @@ public class Board {
         inBoard[origin] = 0;
 
         if(inBoard == boardArray){
-            System.out.println(BoardScore.calculate(boardArray));
             updatePieces(origin, destination, moveType);
             changeTurn();
         }
@@ -267,6 +277,7 @@ public class Board {
         else{
             black.mousePressed(x, y);
         }
+        compMove();
         
     }
 

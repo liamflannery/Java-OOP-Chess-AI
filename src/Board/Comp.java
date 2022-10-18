@@ -3,67 +3,98 @@ package Board;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+import java.awt.Point;
+import Evaluation.BoardScore;
 import Moves.CheckFinder;
 import Pieces.Piece;
+import Services.BoardCalculations;
 
 public class Comp extends Competitor{
-    private Random random;
-    public Comp(List<Piece> myPieces, Board board) {
+
+    boolean isWhite;
+    public Comp(List<Piece> myPieces, Board board, boolean isWhite) {
         super(myPieces, board);
         isPlayer = false;
-        random = new Random();
+        this.isWhite = isWhite;
     }
     Piece selectedPiece;
     List<Piece> myPiecesToCheck;
     public boolean findMove(){
-        myPiecesToCheck = new ArrayList<Piece>(myPieces);
-        selectedPiece = myPiecesToCheck.get(random.nextInt(myPieces.size()));
-        board.potentialSquares = board.moveHandler.findPieceMoves(selectedPiece.getBoardPos(), board.boardArray);
-        CheckFinder.findMoves(board.potentialSquares, board.boardArray, selectedPiece.getBoardPos());
-        while(!hasMove(board.potentialSquares) && myPiecesToCheck.size() > 0){
-            selectedPiece = myPiecesToCheck.get(random.nextInt(myPiecesToCheck.size()));
-            board.potentialSquares = board.moveHandler.findPieceMoves(selectedPiece.getBoardPos(), board.boardArray);
-            CheckFinder.findMoves(board.potentialSquares, board.boardArray, selectedPiece.getBoardPos());
-            myPiecesToCheck.remove(selectedPiece);
+      Minimax(board.boardArray, 3, isWhite, 0);
+      board.move(bestMove.getOrigin(), bestMove.getDestination(), bestMove.getType(), board.boardArray);
+      
+      return true;          
+    }
+
+    
+   
+    int whiteEval;
+    int blackEval;
+    Move bestMove;
+    int[] currentPieceMoves;
+    int[] currentBoard;
+    
+    public int Minimax(int[] currentBoard, int depth, boolean white, int distFromRoot){
+        if(depth == 0){
+            return BoardScore.calculate(currentBoard);
         }
-        if(!hasMove(board.potentialSquares)){
-            System.out.println("game over");
-            return false;
+        if(white){
+            int maxEval = (int) Double.NEGATIVE_INFINITY;
+            System.out.print("As white: ");
+            List<Move> moves = findMoves(currentBoard, white);
+            if(moves.size() <= 0){
+                return (int) Double.NEGATIVE_INFINITY;
+            }
+            for (Move move : moves) {
+
+                int[] testBoard = currentBoard.clone();
+                board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
+                whiteEval = Minimax(testBoard, depth - 1, false, distFromRoot + 1);
+              
+                if(whiteEval >= maxEval && distFromRoot == 0){
+                    bestMove = move;
+                }
+                maxEval = Math.max(maxEval, whiteEval);     
+            }
+            return maxEval;
         }
         else{
-            int move = random.nextInt(board.potentialSquares.length);
-            if(board.potentialSquares.length > 0){
-                while(board.potentialSquares[move] < 1){
-                    move = random.nextInt(board.potentialSquares.length);
+            int minEval = (int) Double.POSITIVE_INFINITY;
+            List<Move> moves = findMoves(currentBoard, white);
+            if(moves.size() <= 0){
+                return (int) Double.POSITIVE_INFINITY;
+            }
+            for (Move move : moves) {
+                int[] testBoard = currentBoard.clone();
+                board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
+                blackEval = Minimax(testBoard, depth - 1, true, distFromRoot + 1);
+                if(blackEval <= minEval && distFromRoot == 0){
+                    bestMove = move;
                 }
-                board.move(selectedPiece.getBoardPos(), move, board.potentialSquares[move], board.boardArray);
-                selectedPiece = null;
-                board.potentialSquares = new int[64];
-                return true;
+                minEval = Math.min(minEval, blackEval);     
             }
-            else{
-                System.out.println("done");
-                return false;
-            }
+            return minEval;
         }
-        
-        
-        
-               
-            
-        
-
-        
-                    
     }
 
 
-    // public int score Minimax(Node currentNode, int depth, boolean white){
-    //     if(depth == 0 || !currentNode.hasMoves()){
-            
-    //     }
-    // }
+    private List<Move> findMoves(int[] thisBoard, boolean white) {
+        List<Move> moves = new ArrayList<Move>();
+        int[] pieceMoves;
+        for(int i = 0; i < thisBoard.length; i++){
+            if(thisBoard[i] != 0){
+                if((white && thisBoard[i] > 0) || (!white && thisBoard[i] < 0)){
+                    pieceMoves = board.moveHandler.findPieceMoves(i, thisBoard);
+                    for(int j = 0; j < pieceMoves.length; j++){
+                        if(pieceMoves[j] > 0){
+                            moves.add(new Move(i, j, pieceMoves[j]));
+                        }
+                    }
+                }
+            }
+        }
+        return moves;
+    }
 
 
     private boolean hasMove(int[] squares) {
