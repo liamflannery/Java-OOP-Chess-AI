@@ -43,46 +43,51 @@ public class Comp extends Competitor{
         if(depth == 0){
             return BoardScore.calculate(currentBoard);
         }
-        if(white){
-            int maxEval = (int) Double.NEGATIVE_INFINITY;
-            List<Move> moves = findMoves(currentBoard, white);
-            if(moves.size() <= 0 && parentMoveType == 2){
-                System.out.println("found checkmate");
-                return (int) Double.NEGATIVE_INFINITY;
-            }
-            for (Move move : moves) {
-                System.out.println(move + " node: " + distFromRoot);
-                int[] testBoard = currentBoard.clone();
-                board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
-                whiteEval = Minimax(testBoard, depth - 1, false, distFromRoot + 1, move.getType());
-              
-                if(whiteEval >= maxEval && distFromRoot == 0){
-                    bestMove = move;
+        
+        int maxEval = (int) Double.NEGATIVE_INFINITY;
+        int minEval = (int) Double.POSITIVE_INFINITY;
+        List<Move> moves = findMoves(currentBoard, white);
+        if(moves.isEmpty()){
+            List<Move> childMoves = findMoves(currentBoard, !white);
+            if(willCheck(childMoves)){
+                if(white){
+                    return (int) Double.NEGATIVE_INFINITY;
                 }
-                maxEval = Math.max(maxEval, whiteEval);     
+                else{
+                    return (int) Double.POSITIVE_INFINITY;
+                }
             }
+            else{
+                return 0;
+            }
+            
+            
+        }
+        for (Move move : moves) {
+            // System.out.println(move + " node: " + distFromRoot);
+            int[] testBoard = currentBoard.clone();
+            board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
+            int eval = Minimax(testBoard, depth - 1, !white, distFromRoot + 1, move.getType());
+            if(((white && eval >= maxEval) || (!white && eval <= minEval)) && distFromRoot == 0){
+                bestMove = move;
+            }
+            if(white){
+                maxEval = Math.max(maxEval, eval);
+            }
+            else{
+                minEval = Math.min(minEval, eval); 
+            }
+                    
+        }
+        if(white){
             return maxEval;
         }
         else{
-            int minEval = (int) Double.POSITIVE_INFINITY;
-            List<Move> moves = findMoves(currentBoard, white);
-            if(moves.size() <= 0 && parentMoveType == 2){
-                System.out.println("found checkmate");
-                return (int) Double.POSITIVE_INFINITY;
-            }
-            for (Move move : moves) {
-                System.out.println(move + " node: " + distFromRoot);
-                int[] testBoard = currentBoard.clone();
-                board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
-                blackEval = Minimax(testBoard, depth - 1, true, distFromRoot + 1, move.getType());
-                if(blackEval <= minEval && distFromRoot == 0){
-                    bestMove = move;
-                }
-                minEval = Math.min(minEval, blackEval);     
-            }
             return minEval;
         }
     }
+
+
 
 
     private List<Move> findMoves(int[] thisBoard, boolean white) {
@@ -113,6 +118,16 @@ public class Comp extends Competitor{
         }
         return false;
     }
+
+    private boolean willCheck(List<Move> childMoves) {
+        for(Move move: childMoves){
+            if(move.getType() == 2){
+                return true;
+            }
+        }
+        return false;
+    }
+
     
 }
 
