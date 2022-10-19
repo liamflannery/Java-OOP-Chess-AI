@@ -5,7 +5,7 @@ import java.awt.Color;
 public class Values {
     
     private static Map<String, Object> valuesDict;
-    static boolean whiteAtBottom = true;
+    static boolean whiteAtBottom = false;
     //store global visual values
     public static final Object valueOf(String input){
         valuesDict = new HashMap<String, Object>();

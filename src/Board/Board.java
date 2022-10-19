@@ -31,8 +31,8 @@ public class Board {
     Competitor white;
     int turn;
     int[] potentialSquares;
-    
-    public Board(int turn){
+    boolean editMode;
+    public Board(int turn, boolean editMode){
         /* 
             0 : empty
             1 : pawn
@@ -65,6 +65,16 @@ public class Board {
              1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
+        boardArray = new int[]{
+             2, 3, 4, 5, 6, 4, 3, 2,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             -1,-1,-1,-1,-1,-1,-1,-1,
+            -2,-3,-4,-5,-6,-4,-3,-2
+        };
 
         // boardArray = new int[]{
         //     0, 0, 0, 0, 0, 0, 0, 0,
@@ -89,11 +99,12 @@ public class Board {
         // };
         
         moveHandler = new MoveHandler(boardArray, this);
+        this.editMode = editMode;
         this.turn = turn;
         createPieces();
         createSquares();
-        white = new Comp(whitePieces, this, true, 2);
-        black = new Comp(blackPieces, this, false, 2);
+        white = new Comp(whitePieces, this, true, 4);
+        black = new Comp(blackPieces, this, false, 4);
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
@@ -169,6 +180,7 @@ public class Board {
         paintPiece = piece -> {
             piece.paint(g, mousePos);
         };
+        
         // if(gameContinue){
         //     gameContinue = compMove();
         // }
@@ -176,6 +188,7 @@ public class Board {
         //     white = new Player(whitePieces, this);
         //     black = new Player(blackPieces, this);
         // }
+
 
         doToEachSquare(paintSquares);
         doToEachPiece(paintPiece, mousePos);
