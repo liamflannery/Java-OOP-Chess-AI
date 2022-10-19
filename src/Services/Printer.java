@@ -16,7 +16,7 @@ public class Printer {
             List<String> rows = new ArrayList<String>();
             String row = ""; 
             for(int i = 0; i < array.length; i++){
-                if(counter <= 8){
+                if(counter < 8){
                     if(array[i] < 0){
                         row += array[i] + ",";
                     }

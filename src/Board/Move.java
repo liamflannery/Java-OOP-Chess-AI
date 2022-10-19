@@ -2,14 +2,18 @@ package Board;
 
 import org.ietf.jgss.Oid;
 
+import Services.IndexToPos;
+
 public class Move {
     int origin;
     int destination; 
     int type;
-    public Move(int origin, int destination, int type){
+    int piece;
+    public Move(int origin, int destination, int type, int piece){
         this.origin = origin;
         this.destination = destination;
         this.type = type;
+        this.piece = piece;
     }
     public int getOrigin(){
         return origin;
@@ -22,7 +26,8 @@ public class Move {
     }
 
     public String toString(){
-        return("From: " + origin + " to " + destination + " type " + type);
+       
+        return(piece + " " + "From: " + IndexToPos.getCoord(origin) + " to " + IndexToPos.getCoord(destination) + " type " + type);
     }
     
 }

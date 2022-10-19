@@ -5,10 +5,13 @@ import java.util.List;
 
 import Moves.CheckFinder;
 import Pieces.Piece;
+import Services.IndexToPos;
+import Services.Printer;
+
 import java.awt.Point;
 public class Player extends Competitor{
 
-    public Player(List<Piece> myPieces, Board board) {
+    public Player(List<Piece> myPieces, Board board, boolean isWhite, int depth) {
         super(myPieces, board);
         isPlayer = true;
         //TODO Auto-generated constructor stub
@@ -46,7 +49,7 @@ public class Player extends Competitor{
                 if(board.squares[i].contains(new Point(x,y))){
                     if(board.potentialSquares[i] != 0){
                         board.move(selectedPiece.getBoardPos(), i, board.potentialSquares[i], board.boardArray);
-                        
+                        System.out.println(IndexToPos.getCoord(i));
                     }
                 }
             }

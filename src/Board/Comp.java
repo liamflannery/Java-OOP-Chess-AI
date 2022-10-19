@@ -47,11 +47,11 @@ public class Comp extends Competitor{
             int maxEval = (int) Double.NEGATIVE_INFINITY;
             List<Move> moves = findMoves(currentBoard, white);
             if(moves.size() <= 0 && parentMoveType == 2){
-                
+                System.out.println("found checkmate");
                 return (int) Double.NEGATIVE_INFINITY;
             }
             for (Move move : moves) {
-
+                System.out.println(move + " node: " + distFromRoot);
                 int[] testBoard = currentBoard.clone();
                 board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
                 whiteEval = Minimax(testBoard, depth - 1, false, distFromRoot + 1, move.getType());
@@ -71,6 +71,7 @@ public class Comp extends Competitor{
                 return (int) Double.POSITIVE_INFINITY;
             }
             for (Move move : moves) {
+                System.out.println(move + " node: " + distFromRoot);
                 int[] testBoard = currentBoard.clone();
                 board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
                 blackEval = Minimax(testBoard, depth - 1, true, distFromRoot + 1, move.getType());
@@ -93,12 +94,8 @@ public class Comp extends Competitor{
                     pieceMoves = board.moveHandler.findPieceMoves(i, thisBoard);
                     CheckFinder.findMoves(pieceMoves, thisBoard, i);
                     for(int j = 0; j < pieceMoves.length; j++){
-                        if(pieceMoves[j] > 0){
-                            if(pieceMoves[j] != 1){
-                                System.out.println(pieceMoves[j]);
-                            }
-                            
-                            moves.add(new Move(i, j, pieceMoves[j]));
+                        if(pieceMoves[j] > 0){                          
+                            moves.add(new Move(i, j, pieceMoves[j], thisBoard[i]));
                         }
                     }
                 }
