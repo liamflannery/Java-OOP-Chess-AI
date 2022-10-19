@@ -1,11 +1,11 @@
-# Natural Selection Simulation Project
+# Chess Engine
 
-![Screen Shot 2022-09-16 at 4 19 17 pm](https://user-images.githubusercontent.com/55472933/190570859-e0104ccb-b1b0-4145-b595-e4b0461d730d.png)
+
 
 
 
 ## Task Log
-https://important-alloy-399.notion.site/2f406529a57148b08a61292ddc4f1df2?v=534e69491ee64df4a594894cd399e458
+https://important-alloy-399.notion.site/dbb6801f28ee48c28d7d58c5ac83a6b5?v=c054c5b8c80f4dd0b4f20162f0de4b85
 
 
 
@@ -54,4 +54,7 @@ Week 6/7 - Worked on report and presentation
 Week 8 - reevaulating project want to create a Chess AI
 https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977/ 
 https://towardsdatascience.com/implementing-a-chess-engine-from-scratch-be38cbdae91 
+
+Week 11 - Added minimax algorithm and position evaluations
+
 
