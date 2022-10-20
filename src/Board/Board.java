@@ -32,6 +32,11 @@ public class Board {
     int turn;
     int[] potentialSquares;
     boolean editMode;
+    boolean wKCastle;
+    boolean wQCastle;
+    boolean bKCastle;
+    boolean bQCastle;
+    boolean[] castle = {wKCastle, wQCastle, bKCastle, bQCastle};
     public Board(int turn, boolean editMode){
         /* 
             0 : empty
@@ -45,6 +50,8 @@ public class Board {
             + : white 
         */
         //set up board
+        
+        //blank board
         // boardArray = new int[]{
         //     0, 0, 0, 0, 0, 0, 0, 0,
         //     0, 0, 0, 0, 0, 0, 0, 0,
@@ -55,6 +62,8 @@ public class Board {
         //     0, 0, 0, 0, 0, 0, 0, 0,
         //     0, 0, 0, 0, 0, 0, 0, 0
         // };
+
+        //white at bottom start position
         boardArray = new int[]{
             -2,-3,-4,-5,-6,-4,-3,-2,
             -1,-1,-1,-1,-1,-1,-1,-1,
@@ -65,6 +74,7 @@ public class Board {
              1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
+        //black at bottom start position
         // boardArray = new int[]{
         //      2, 3, 4, 5, 6, 4, 3, 2,
         //      1, 1, 1, 1, 1, 1, 1, 1,
@@ -75,6 +85,18 @@ public class Board {
         //      -1,-1,-1,-1,-1,-1,-1,-1,
         //     -2,-3,-4,-5,-6,-4,-3,-2
         // };
+
+        boardArray = new int[]{
+            -2,0,0,0,-6,0,0,-2,
+            -1,-1,-1,-1,-1,-1,-1,-1,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             2, 0, 0, 0, 6, 0, 0, 2
+        };
+
 
         // boardArray = new int[]{
         //     0, 0, 0, 0, 0, 0, 0, 0,
@@ -283,7 +305,20 @@ public class Board {
         if(moveType == 3){
             piece = 5 * piece;
         }
-        
+        if(moveType == 4){
+            int rookOrigin = origin + 3;
+            int rookDestination = origin + 1;
+            inBoard[rookDestination] = inBoard[rookOrigin];
+            inBoard[rookOrigin] = 0;
+            updatePieces(rookOrigin, rookDestination, moveType);
+        }
+        if(moveType == 5){
+            int rookOrigin = origin - 4;
+            int rookDestination = origin - 1;
+            inBoard[rookDestination] = inBoard[rookOrigin];
+            inBoard[rookOrigin] = 0;
+            updatePieces(rookOrigin, rookDestination, moveType);
+        }
         inBoard[destination] = piece;
         inBoard[origin] = 0;
 
