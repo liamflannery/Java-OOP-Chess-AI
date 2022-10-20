@@ -10,7 +10,7 @@ import Board.Board;
 import Board.Competitor;
 public class Stage {
    Board board;
-   public int turn = -1;
+   public int turn = 1;
    Competitor white;
    Competitor black;
     public Stage() {

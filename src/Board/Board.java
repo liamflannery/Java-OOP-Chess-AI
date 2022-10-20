@@ -65,16 +65,16 @@ public class Board {
              1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
-        boardArray = new int[]{
-             2, 3, 4, 5, 6, 4, 3, 2,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             -1,-1,-1,-1,-1,-1,-1,-1,
-            -2,-3,-4,-5,-6,-4,-3,-2
-        };
+        // boardArray = new int[]{
+        //      2, 3, 4, 5, 6, 4, 3, 2,
+        //      1, 1, 1, 1, 1, 1, 1, 1,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      -1,-1,-1,-1,-1,-1,-1,-1,
+        //     -2,-3,-4,-5,-6,-4,-3,-2
+        // };
 
         // boardArray = new int[]{
         //     0, 0, 0, 0, 0, 0, 0, 0,
@@ -103,7 +103,7 @@ public class Board {
         this.turn = turn;
         createPieces();
         createSquares();
-        white = new Comp(whitePieces, this, true, 4);
+        white = new Player(whitePieces, this, true, 4);
         black = new Comp(blackPieces, this, false, 4);
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
