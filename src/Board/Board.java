@@ -31,12 +31,7 @@ public class Board {
     Competitor white;
     int turn;
     int[] potentialSquares;
-    boolean editMode;
-    boolean wKCastle;
-    boolean wQCastle;
-    boolean bKCastle;
-    boolean bQCastle;
-    boolean[] castle = {wKCastle, wQCastle, bKCastle, bQCastle};
+    BoardState boardState;
     public Board(int turn, boolean editMode){
         /* 
             0 : empty
@@ -87,7 +82,7 @@ public class Board {
         // };
 
         boardArray = new int[]{
-            -2,0,0,0,-6,0,0,-2,
+            -2, 0, 0, 0,-6, 0, 0,-2,
             -1,-1,-1,-1,-1,-1,-1,-1,
              0, 0, 0, 0, 0, 0, 0, 0,
              0, 0, 0, 0, 0, 0, 0, 0,
@@ -120,8 +115,6 @@ public class Board {
         //     2,3,4,0,6,4,3,2
         // };
         
-        moveHandler = new MoveHandler(boardArray, this);
-        this.editMode = editMode;
         this.turn = turn;
         createPieces();
         createSquares();

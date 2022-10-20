@@ -24,7 +24,7 @@ public class Comp extends Competitor{
     List<Piece> myPiecesToCheck;
     public boolean findMove(){
       moveCount = 0;
-      Minimax(board.boardArray, parentDepth, isWhite, 0, 0);
+      Minimax(board.boardState, parentDepth, isWhite, 0, 0);
       System.out.println(moveCount);
       if(bestMove == null){
         return false;
@@ -42,16 +42,17 @@ public class Comp extends Competitor{
     int[] currentPieceMoves;
     int[] currentBoard;
     
-    public int Minimax(int[] currentBoard, int depth, boolean white, int distFromRoot, int parentMoveType){
+    public int Minimax(BoardState boardState, int depth, boolean white, int distFromRoot, int parentMoveType){
+        currentBoard = boardState.getBoardArray();
         if(depth == 0){
             return BoardScore.calculate(currentBoard);
         }
         
         int maxEval = (int) Double.NEGATIVE_INFINITY;
         int minEval = (int) Double.POSITIVE_INFINITY;
-        List<Move> moves = findMoves(currentBoard, white);
+        List<Move> moves = findMoves(boardState, white);
         if(moves.isEmpty()){
-            List<Move> childMoves = findMoves(currentBoard, !white);
+            List<Move> childMoves = findMoves(boardState, !white);
             if(willCheck(childMoves)){
                 if(white){
                     return (int) Double.NEGATIVE_INFINITY;
@@ -68,9 +69,10 @@ public class Comp extends Competitor{
         }
         for (Move move : moves) {
             // System.out.println(move + " node: " + distFromRoot);
-            int[] testBoard = currentBoard.clone();
+            BoardState testBoardState = new BoardState(boardState);
+            int[] testBoard = testBoardState.getBoardArray();
             board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
-            int eval = Minimax(testBoard, depth - 1, !white, distFromRoot + 1, move.getType());
+            int eval = Minimax(testBoardState, depth - 1, !white, distFromRoot + 1, move.getType());
             if(((white && eval >= maxEval) || (!white && eval <= minEval)) && distFromRoot == 0){
                 bestMove = move;
             }
@@ -93,14 +95,15 @@ public class Comp extends Competitor{
 
 
 
-    private List<Move> findMoves(int[] thisBoard, boolean white) {
+    private List<Move> findMoves(BoardState thisBoardState, boolean white) {
         List<Move> moves = new ArrayList<Move>();
+        int[] thisBoard = thisBoardState.getBoardArray();
         int[] pieceMoves;
         for(int i = 0; i < thisBoard.length; i++){
             if(thisBoard[i] != 0){
                 if((white && thisBoard[i] > 0) || (!white && thisBoard[i] < 0)){
-                    pieceMoves = board.moveHandler.findPieceMoves(i, thisBoard);
-                    CheckFinder.findMoves(pieceMoves, thisBoard, i);
+                    pieceMoves = board.moveHandler.findPieceMoves(i, thisBoardState);
+                    CheckFinder.findMoves(pieceMoves, thisBoardState, i);
                     for(int j = 0; j < pieceMoves.length; j++){
                         if(pieceMoves[j] > 0){                          
                             moves.add(new Move(i, j, pieceMoves[j], thisBoard[i]));

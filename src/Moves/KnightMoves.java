@@ -1,10 +1,12 @@
 package Moves;
 
+import Board.BoardState;
+
 public class KnightMoves extends PieceMoves{
     int[] knightDir;
     @Override
-    public int[] find(int[] boardArray, int boardPos, int[] moves) {
-        this.boardArray = boardArray;
+    public int[] find(BoardState boardState, int boardPos, int[] moves) {
+        this.boardState = boardState;
         this.boardPos = boardPos;
         this.moves = moves;
         knightDir = new int[]{-17,-15,-10,-6,6,10,15,17};
