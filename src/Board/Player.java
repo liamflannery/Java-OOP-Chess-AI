@@ -49,7 +49,6 @@ public class Player extends Competitor{
                 if(board.squares[i].contains(new Point(x,y))){
                     if(board.potentialSquares[i] != 0){
                         board.move(selectedPiece.getBoardPos(), i, board.potentialSquares[i], board.boardArray);
-                        System.out.println(IndexToPos.getCoord(i));
                     }
                 }
             }

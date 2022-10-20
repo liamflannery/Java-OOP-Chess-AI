@@ -20,9 +20,13 @@ public class Comp extends Competitor{
         parentDepth = depth;
     }
     Piece selectedPiece;
+    int totalMoves;
     List<Piece> myPiecesToCheck;
+    
     public boolean findMove(){
+      totalMoves = 0;
       Minimax(board.boardArray, parentDepth, isWhite, 0, 0);
+      System.out.println(totalMoves);
       if(bestMove == null){
         return false;
       }
@@ -99,7 +103,8 @@ public class Comp extends Competitor{
                     pieceMoves = board.moveHandler.findPieceMoves(i, thisBoard);
                     CheckFinder.findMoves(pieceMoves, thisBoard, i);
                     for(int j = 0; j < pieceMoves.length; j++){
-                        if(pieceMoves[j] > 0){                          
+                        if(pieceMoves[j] > 0){       
+                            totalMoves++;                   
                             moves.add(new Move(i, j, pieceMoves[j], thisBoard[i]));
                         }
                     }
