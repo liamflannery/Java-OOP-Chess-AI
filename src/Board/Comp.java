@@ -19,10 +19,13 @@ public class Comp extends Competitor{
         this.isWhite = isWhite;
         parentDepth = depth;
     }
+    int moveCount;
     Piece selectedPiece;
     List<Piece> myPiecesToCheck;
     public boolean findMove(){
+      moveCount = 0;
       Minimax(board.boardArray, parentDepth, isWhite, 0, 0);
+      System.out.println(moveCount);
       if(bestMove == null){
         return false;
       }
@@ -101,6 +104,7 @@ public class Comp extends Competitor{
                     for(int j = 0; j < pieceMoves.length; j++){
                         if(pieceMoves[j] > 0){                          
                             moves.add(new Move(i, j, pieceMoves[j], thisBoard[i]));
+                            moveCount++;
                         }
                     }
                 }
