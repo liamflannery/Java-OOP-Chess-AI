@@ -28,5 +28,7 @@ public class BoardState {
     public Move getPreviousMove(){
         return previousMove;
     }
+
+    
     
 }

@@ -11,6 +11,7 @@ public class PieceMoves {
     int move;
     int[] directionIndex = new int[]{8,-8,-1,1,7,-7,9,-9};
     int[][] numSquaresToEdge = BoardCalculations.computeSquares();
+    boolean[] castleInfo;
     BoardState boardState;
     public int[] find(BoardState boardState, int boardPos, int[] moves) {
         

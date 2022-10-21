@@ -9,17 +9,23 @@ public class KingMoves extends PieceMoves{
         this.boardPos = boardPos;
         this.moves = moves;
         this.boardArray = boardState.getBoardArray();
+        this.castleInfo = boardState.getCastlingArray();
         //single moves in all direcitons
         singleMoves(0,8);
-        //castle();
+        castle();
         
         return moves;
     }
     public void castle(){
-        move = boardPos + 2;
-        vetMove(4);
-        move = boardPos - 2;
-        vetMove(5);
+        if(boardArray[boardPos] < 0 && castleInfo[0] || boardArray[boardPos] > 0 && castleInfo[2]){
+            move = boardPos + 2;
+            vetMove(4);
+        }
+        if(boardArray[boardPos] < 0 && castleInfo[1] || boardArray[boardPos] > 0 && castleInfo[3]){
+            move = boardPos - 2;
+            vetMove(5);
+        }
+
         
     }
 }
