@@ -28,7 +28,6 @@ public class MoveHandler {
     public static final int[] findPieceMoves(int boardPos, BoardState boardState){
         int[] moves = new int[64];
         currentBoardState = boardState;
-        System.out.println("BoardState: " + currentBoardState);
         int piece = currentBoardState.getBoardArray()[boardPos];
         switch(Math.abs(piece)){
             case(0):

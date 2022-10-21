@@ -40,7 +40,6 @@ public class PieceMoves {
     //multi space moves (rook/bishop/queen)
     //8 directions, [0-4] are straight [4-8] are diagonal
     public void slidingMoves(int direction, int directionEnd){
-        System.out.println(boardArray);
         for(int i = direction; i < directionEnd ; i++){
             for(int j = 1; j <= numSquaresToEdge[boardPos][i]; j++){
                 move = boardPos + directionIndex[i] * j;

@@ -81,16 +81,16 @@ public class Board {
         //     -2,-3,-4,-5,-6,-4,-3,-2
         // };
 
-        boardArray = new int[]{
-            -2, 0, 0, 0,-6, 0, 0,-2,
-            -1,-1,-1,-1,-1,-1,-1,-1,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             0, 0, 0, 0, 0, 0, 0, 0,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             2, 0, 0, 0, 6, 0, 0, 2
-        };
+        // boardArray = new int[]{
+        //     -2, 0, 0, 0,-6, 0, 0,-2,
+        //     -1,-1,-1,-1,-1,-1,-1,-1,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      1, 1, 1, 1, 1, 1, 1, 1,
+        //      2, 0, 0, 0, 6, 0, 0, 2
+        // };
 
 
         // boardArray = new int[]{
@@ -104,22 +104,22 @@ public class Board {
         //     0, 0, 0, 0, 0, 0, 0, 0
         // };
 
-        // boardArray = new int[]{
-        //     -2,-3,0,0,-6,0,-3,-2,
-        //     -1,-1,-1,0,-5,-1,0,-1,
-        //     0,0,0,0,0,0,-1,0,
-        //     0,0,-4,0,0,-4,0,0,
-        //     0,0,0,-1,0,1,0,0,
-        //     0,0,0,1,0,0,0,0,
-        //     1,1,1,0,5,0,1,1,
-        //     2,3,4,0,6,4,3,2
-        // };
+        boardArray = new int[]{
+            -2,-3,0,0,-6,0,-3,-2,
+            -1,-1,-1,0,-5,-1,0,-1,
+            0,0,0,0,0,0,-1,0,
+            0,0,-4,0,0,-4,0,0,
+            0,0,0,-1,0,1,0,0,
+            0,0,0,1,0,0,0,0,
+            1,1,1,0,5,0,1,1,
+            2,3,4,0,6,4,3,2
+        };
         
         this.turn = turn;
         createPieces();
         createSquares();
         boardState = new BoardState(boardArray, new boolean[]{true,true,true,true}, null);
-        white = new Player(whitePieces, this, true, 2);
+        white = new Comp(whitePieces, this, true, 1);
         black = new Comp(blackPieces, this, false, 4);
         moveHandler = new MoveHandler();
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;

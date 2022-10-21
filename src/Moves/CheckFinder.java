@@ -12,12 +12,13 @@ public final class CheckFinder {
     static BoardState testBoardState;
     public static void findMoves(int[] potentialSquares, BoardState boardState, int boardPos) {
         testBoardState = new BoardState(boardState);
-        testBoard = testBoardState.getBoardArray().clone();
+        testBoard = testBoardState.getBoardArray();
         int currentPiece = testBoard[boardPos];
         
         for(int i = 0; i < potentialSquares.length; i++){
             if(potentialSquares[i] > 0){
-                testBoard = boardState.getBoardArray().clone();
+                testBoardState = new BoardState(boardState);
+                testBoard = testBoardState.getBoardArray();
                 testBoard[boardPos] = 0;
                 testBoard[i] = currentPiece;
                 
