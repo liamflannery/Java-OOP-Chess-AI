@@ -8,7 +8,7 @@ public class QueenMoves extends PieceMoves{
         this.boardState = boardState;
         this.boardPos = boardPos;
         this.moves = moves;
-        
+        this.boardArray = boardState.getBoardArray();
          slidingMoves(0,8);
      
         

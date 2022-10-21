@@ -8,6 +8,7 @@ public class KingMoves extends PieceMoves{
         this.boardState = boardState;
         this.boardPos = boardPos;
         this.moves = moves;
+        this.boardArray = boardState.getBoardArray();
         //single moves in all direcitons
         singleMoves(0,8);
         castle();

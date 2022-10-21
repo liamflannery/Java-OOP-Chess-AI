@@ -14,12 +14,21 @@ public class MoveHandler {
     static PieceMoves bishopMoves;
     static PieceMoves queenMoves;
     static PieceMoves kingMoves;
-    
+   
+    public MoveHandler(){
+        pawnMoves = new PawnMoves();
+        knightMoves = new KnightMoves();
+        rookMoves = new RookMoves();
+        bishopMoves = new BishopMoves();
+        queenMoves = new QueenMoves();
+        kingMoves = new KingMoves();
+    }
 
     //find all potential moves for piece at certain position on board
     public static final int[] findPieceMoves(int boardPos, BoardState boardState){
         int[] moves = new int[64];
         currentBoardState = boardState;
+        System.out.println("BoardState: " + currentBoardState);
         int piece = currentBoardState.getBoardArray()[boardPos];
         switch(Math.abs(piece)){
             case(0):

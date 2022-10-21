@@ -32,7 +32,7 @@ public class Board {
     int turn;
     int[] potentialSquares;
     BoardState boardState;
-    public Board(int turn, boolean editMode){
+    public Board(int turn){
         /* 
             0 : empty
             1 : pawn
@@ -118,8 +118,10 @@ public class Board {
         this.turn = turn;
         createPieces();
         createSquares();
+        boardState = new BoardState(boardArray, new boolean[]{true,true,true,true}, null);
         white = new Player(whitePieces, this, true, 2);
         black = new Comp(blackPieces, this, false, 4);
+        moveHandler = new MoveHandler();
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 

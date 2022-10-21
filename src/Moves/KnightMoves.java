@@ -9,6 +9,7 @@ public class KnightMoves extends PieceMoves{
         this.boardState = boardState;
         this.boardPos = boardPos;
         this.moves = moves;
+        this.boardArray = boardState.getBoardArray();
         knightDir = new int[]{-17,-15,-10,-6,6,10,15,17};
         knightMoves();
      

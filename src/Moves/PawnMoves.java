@@ -1,5 +1,6 @@
 package Moves;
 
+import Board.BoardState;
 import Services.Values;
 
 public class PawnMoves extends PieceMoves{
@@ -10,6 +11,7 @@ public class PawnMoves extends PieceMoves{
         this.boardState = boardState;
         this.boardPos = boardPos;
         this.moves = moves;
+        this.boardArray = boardState.getBoardArray();
         upDirection = Values.upDirection(boardArray[boardPos]);
         pawnMoves();
         specialPawnMoves();
