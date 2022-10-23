@@ -22,8 +22,12 @@ public class KingMoves extends PieceMoves{
             vetMove(4);
         }
         if(boardArray[boardPos] < 0 && castleInfo[1] || boardArray[boardPos] > 0 && castleInfo[3]){
-            move = boardPos - 2;
-            vetMove(5);
+            if(boardArray[boardPos - 3] == 0){
+                move = boardPos - 2;
+                vetMove(5);
+            }
+            
+            
         }
 
         
