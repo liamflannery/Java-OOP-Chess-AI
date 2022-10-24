@@ -81,16 +81,16 @@ public class Board {
         //     -2,-3,-4,-5,-6,-4,-3,-2
         // };
 
-        // boardArray = new int[]{
-        //     -2, 0, 0, 0,-6, 0, 0,-2,
-        //     -1,-1,-1,-1,-1,-1,-1,-1,
-        //      0, 0, 0, 0, 0, 0, 0, 0,
-        //      0, 0, 0, 0, 0, 0, 0, 0,
-        //      0, 0, 0, 0, 0, 0, 0, 0,
-        //      0, 0, 0, 0, 0, 0, 0, 0,
-        //      1, 1, 1, 1, 1, 1, 1, 1,
-        //      2, 0, 0, 0, 6, 0, 0, 2
-        // };
+        boardArray = new int[]{
+            -2, 0, 0, 0,-6, 0, 0,-2,
+            -1,-1,-1,-1,-1,-1,-1,-1,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             2, 0, 0, 0, 6, 0, 0, 2
+        };
 
 
         // boardArray = new int[]{
@@ -313,6 +313,9 @@ public class Board {
             inBoard[rookDestination] = inBoard[rookOrigin];
             inBoard[rookOrigin] = 0;
             updatePieces(rookOrigin, rookDestination, moveType);
+        }
+        if(piece == Math.abs(6) || piece == Math.abs(2)){
+            castleUpdates();
         }
         inBoard[destination] = piece;
         inBoard[origin] = 0;

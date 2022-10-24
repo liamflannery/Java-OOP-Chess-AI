@@ -28,7 +28,7 @@ public class Player extends Competitor{
                 if(piece.pointAtPiece(mousePosition)){
                     selectedPiece = piece;
                     board.potentialSquares = board.moveHandler.findPieceMoves(selectedPiece.getBoardPos(), board.boardState);
-                    CheckFinder.findMoves(board.potentialSquares, board.boardState, selectedPiece.getBoardPos());
+                    //CheckFinder.findMoves(board.potentialSquares, board.boardState, selectedPiece.getBoardPos());
                     board.paintSquares();
                     break;
                 }
