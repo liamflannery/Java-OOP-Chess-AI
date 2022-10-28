@@ -28,6 +28,32 @@ public class BoardState {
     public Move getPreviousMove(){
         return previousMove;
     }
+    public void setCastlingArray(int piece, int pos) {
+        if(piece == 6){
+            castlingArray[0] = false;
+            castlingArray[1] = false;
+        }
+        if(piece == -6){
+            castlingArray[2] = false;
+            castlingArray[3] = false;
+        }
+        if(piece == 2){
+            if(pos + 8 % 8 == 0){
+                castlingArray[0] = false;
+            }
+            if(pos + 8 % 7 == 0){
+                castlingArray[1] = false;
+            }
+        }
+        if(piece == -2){
+            if(pos + 8 % 8 == 0){
+                castlingArray[2] = false;
+            }
+            if(pos + 8 % 7 == 0){
+                castlingArray[3] = false;
+            }
+        }
+    }
 
     
     

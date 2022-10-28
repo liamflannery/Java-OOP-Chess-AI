@@ -29,7 +29,8 @@ public class Comp extends Competitor{
       if(bestMove == null){
         return false;
       }
-      board.move(bestMove.getOrigin(), bestMove.getDestination(), bestMove.getType(), board.boardArray);
+      System.out.println(bestMove);
+      board.move(bestMove.getOrigin(), bestMove.getDestination(), bestMove.getType(), board.boardState);
       
       return true;          
     }
@@ -71,7 +72,7 @@ public class Comp extends Competitor{
             // System.out.println(move + " node: " + distFromRoot);
             BoardState testBoardState = new BoardState(boardState);
             int[] testBoard = testBoardState.getBoardArray();
-            board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
+            board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoardState);
             int eval = Minimax(testBoardState, depth - 1, !white, distFromRoot + 1, move.getType());
             if(((white && eval >= maxEval) || (!white && eval <= minEval)) && distFromRoot == 0){
                 bestMove = move;
