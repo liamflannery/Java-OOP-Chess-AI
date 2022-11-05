@@ -44,6 +44,31 @@ The PieceMoves parent class has functions for ‘single moves’ and ‘sliding 
 Checks and checkmates are an essential part of determining the legality of a move. This is because the king can never be taken in chess which means that no piece can move in a way that exposes the king. 
 In order to calculate checks, the CheckFinder class takes in each potential move of a piece. The class then looks at each response to this move and if any of those moves will take the king, then the move is discounted.
 
+## Chess Engine
+My Chess Engine works by attempting to find the best move possible in any given position using the Minimax algorithm.
+Minimax Algorithm 
+The Minimax algorithm is an algorithm that is applicable in games where one player is attempting to maximise the score, and the other trying to minimise the score. In my representation of the chess board, the white pieces are assigned positive score values and the black negative. This means that in any given position, white is ultimately trying to increase the score of the board and black is trying to decrease the score of the board (with the ultimate goal being for each player to checkmate their opponent). 
+
+The Minimax algorithm works by recursively searching through a tree of moves to look a certain number of moves ahead in a Chess game, the final position at the end of the tree is evaluated to find the score of the board. This process can be better understood with the following graphical representation:  
+
+Where each square represents a move and the number represents the engine’s evaluation of the position after that move is made. 
+
+### Board Evaluation
+The process of evaluating a position is the key for any Chess engine to be able to evaluate the best move in any position. My Chess engine is comparatively basic and only uses two calculations to evaluate a position, these are piece scores and heatmaps. 
+Piece Scores
+Evaluation of piece scores is the process of assigning a value to each piece and then calculating the total score of the board. Based on values from the website Chessprogramming.org my values were as following (with the positive value being for white pieces and the negative value being for black pieces): 
+	Pawn : 100
+	Knight : 320
+	Bishop : 330
+	Queen : 900
+	King : 20,000
+
+Based on this evaluation, when all of the values of the pieces are summed, the engine will make a move that either maximises or minimises this sum. 
+	
+### Heatmaps
+There are times in a chess game, particularly in the opening of the game when taking pieces is either not an option or will not produce the most ideal result. In these cases, my engine uses ‘heatmaps’ for each piece in which the piece will preference certain squares to move to, this works by assigning value to each square of the board depending on the piece, and then adding that value to the evaluation score. These values can be seen in Appendix 3.   
+
+
 
 
 
