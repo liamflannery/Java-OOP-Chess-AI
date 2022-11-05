@@ -24,13 +24,15 @@ public class BoardScore {
         for(int i = 0; i < board.length; i++){
             if(board[i] == 6){
                 score += 20000;
+                score += ScoreMap.getValue(i, board[i], board);
             }
             if(board[i] == -6){
                 score += -20000;
+                score += ScoreMap.getValue(i, board[i], board);
             }
             if(pieceValues.containsKey(board[i])){
                 score += pieceValues.get(board[i]);
-                score += ScoreMap.getValue(i, board[i]);
+                score += ScoreMap.getValue(i, board[i], board);
             }
         }
         return score;

@@ -1,5 +1,7 @@
 package Evaluation;
 
+import java.util.Arrays;
+
 import Services.Values;
 
 // https://www.chessprogramming.org/Simplified_Evaluation_Function#Piece-Square_Tables
@@ -67,15 +69,26 @@ public final class ScoreMap {
         20, 30, 10,  0,  0, 10, 30, 20
 
     };
+    static int[] kingEndGameMap = new int[]{
+        -50,-40,-30,-20,-20,-30,-40,-50,
+        -30,-20,-10,  0,  0,-10,-20,-30,
+        -30,-10, 20, 30, 30, 20,-10,-30,
+        -30,-10, 30, 40, 40, 30,-10,-30,
+        -30,-10, 30, 40, 40, 30,-10,-30,
+        -30,-10, 20, 30, 30, 20,-10,-30,
+        -30,-30,  0,  0,  0,  0,-30,-30,
+        -50,-30,-30,-30,-30,-30,-30,-50
+    };
     
 
-    public final static int getValue(int pos, int piece){
+    public final static int getValue(int pos, int piece, int[] board){
         
         int lookUpVal = pos;
         int returnVal;
         if(Values.upDirection(piece) > 0){
             lookUpVal = 63 - lookUpVal;
         }
+        
         switch(Math.abs(piece)){
             case(1):
                 returnVal = pawnMap[lookUpVal];
@@ -93,7 +106,13 @@ public final class ScoreMap {
                 returnVal = queenMap[lookUpVal];
                 break;
             case(6):
-                returnVal = kingMap[lookUpVal];
+                if(endgame(board)){
+                    returnVal = kingEndGameMap[lookUpVal];
+                }
+                else{
+                    returnVal = kingMap[lookUpVal];
+                }
+                
                 break;
             default:
                 returnVal = 0;
@@ -106,5 +125,26 @@ public final class ScoreMap {
             return -returnVal;
         }
         
+    }
+
+
+    private static boolean endgame(int[] board) {
+      
+        if(!(Arrays.asList(board).contains(6) || Arrays.asList(board).contains(-6))){
+            return true;
+        }
+        int boardSum = 0;
+        for(int i = 0; i < board.length; i++){
+            if(Math.abs(board[i]) != 1 && Math.abs(board[i]) != 6 && Math.abs(board[i]) != 5){
+                boardSum += Math.abs(board[i]);
+            }
+        }
+        
+        if(boardSum < 10){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

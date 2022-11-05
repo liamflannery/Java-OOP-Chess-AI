@@ -22,7 +22,7 @@ public class Board {
     List<Piece> allPieces;
     List<Piece> currentPieces = whitePieces;
     
-    int[] boardArray;
+    int[] boardArray = new int[64];
     MoveHandler moveHandler;
     Piece selectedPiece;
     Consumer<Square> paintSquares;
@@ -57,6 +57,16 @@ public class Board {
         //     0, 0, 0, 0, 0, 0, 0, 0,
         //     0, 0, 0, 0, 0, 0, 0, 0
         // };
+        // boardArray = new int[]{
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0,-6, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 6, 0, 0, 0,
+        //     0, 0, 2, 0, 0, 0, 1, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0
+        // };
 
         //white at bottom start position
         boardArray = new int[]{
@@ -71,14 +81,14 @@ public class Board {
         };
         //black at bottom start position
         // boardArray = new int[]{
-        //      2, 3, 4, 5, 6, 4, 3, 2,
+        //      2, 3, 4, 6, 5, 4, 3, 2,
         //      1, 1, 1, 1, 1, 1, 1, 1,
         //      0, 0, 0, 0, 0, 0, 0, 0,
         //      0, 0, 0, 0, 0, 0, 0, 0,
         //      0, 0, 0, 0, 0, 0, 0, 0,
         //      0, 0, 0, 0, 0, 0, 0, 0,
         //      -1,-1,-1,-1,-1,-1,-1,-1,
-        //     -2,-3,-4,-5,-6,-4,-3,-2
+        //     -2,-3,-4,-6,-5,-4,-3,-2
         // };
 
         // boardArray = new int[]{
@@ -119,7 +129,7 @@ public class Board {
         createPieces();
         createSquares();
         boardState = new BoardState(boardArray, new boolean[]{true,true,true,true}, null);
-        white = new Player(whitePieces, this, true, 1);
+        white = new Player(whitePieces, this, true, 4);
         black = new Comp(blackPieces, this, false, 4);
         moveHandler = new MoveHandler();
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
