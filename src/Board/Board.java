@@ -64,7 +64,7 @@ public class Board {
         //     0, 0, 0, 0, 0, 0, 0, 0,
         //     0, 0, 0, 0, 0, 0, 0, 0,
         //     0, 0, 0, 0, 6, 0, 0, 0,
-        //     0, 0, 2, 0, 0, 0, 1, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
         //     0, 0, 0, 0, 0, 0, 0, 0
         // };
 
@@ -78,6 +78,17 @@ public class Board {
              0, 0, 0, 0, 0, 0, 0, 0,
              1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
+        };
+
+            boardArray = new int[]{
+            0, 0, 0, 0, 5, 0, 0, 0,
+            0, 0, 0, 0, 0, 0,-1,-6,
+            0, 0, 0, 0, 0,-1, 3, 0,
+            0, 0, 0, 0, 0, 4, 0,-1,
+            0, 0, 0, 0, 6, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0
         };
         //black at bottom start position
         // boardArray = new int[]{
@@ -129,8 +140,8 @@ public class Board {
         createPieces();
         createSquares();
         boardState = new BoardState(boardArray, new boolean[]{true,true,true,true}, null);
-        white = new Player(whitePieces, this, true, 4);
-        black = new Comp(blackPieces, this, false, 4);
+        white = new Comp(whitePieces, this, true, 2, false);
+        black = new Player(blackPieces, this, false, 4);
         moveHandler = new MoveHandler();
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
@@ -330,7 +341,7 @@ public class Board {
             }
             
         }
-        if(piece == Math.abs(6) || piece == Math.abs(2)){
+        if(Math.abs(piece) == 6 || Math.abs(piece) == 2){
             castleUpdates(piece, origin, inBoardState);
         }
         inBoard[destination] = piece;

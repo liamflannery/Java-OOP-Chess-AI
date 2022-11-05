@@ -13,23 +13,24 @@ public class Comp extends Competitor{
 
     boolean isWhite;
     int parentDepth;
-    public Comp(List<Piece> myPieces, Board board, boolean isWhite, int depth) {
+    boolean abp;
+    public Comp(List<Piece> myPieces, Board board, boolean isWhite, int depth, boolean abp) {
         super(myPieces, board);
         isPlayer = false;
         this.isWhite = isWhite;
         parentDepth = depth;
+        this.abp = abp;
     }
     int moveCount;
     Piece selectedPiece;
     List<Piece> myPiecesToCheck;
     public boolean findMove(){
       moveCount = 0;
-      Minimax(board.boardState, parentDepth, isWhite, 0, 0);
-      System.out.println(moveCount);
+      Minimax(board.boardState,parentDepth, (int) Double.NEGATIVE_INFINITY , (int) Double.POSITIVE_INFINITY, isWhite, 0, 0);
+      System.out.println("Move Count: " + moveCount);
       if(bestMove == null){
         return false;
       }
-      System.out.println(bestMove);
       board.move(bestMove.getOrigin(), bestMove.getDestination(), bestMove.getType(), board.boardState);
       
       return true;          
@@ -43,7 +44,7 @@ public class Comp extends Competitor{
     int[] currentPieceMoves;
     int[] currentBoard;
     
-    public int Minimax(BoardState boardState, int depth, boolean white, int distFromRoot, int parentMoveType){
+    public int Minimax(BoardState boardState, int depth, int alpha, int beta, boolean white, int distFromRoot, int parentMoveType){
         currentBoard = boardState.getBoardArray();
         if(depth == 0){
             return BoardScore.calculate(currentBoard);
@@ -73,15 +74,26 @@ public class Comp extends Competitor{
             BoardState testBoardState = new BoardState(boardState);
             int[] testBoard = testBoardState.getBoardArray();
             board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoardState);
-            int eval = Minimax(testBoardState, depth - 1, !white, distFromRoot + 1, move.getType());
+            
+            int eval = Minimax(testBoardState, depth - 1, alpha, beta, !white, distFromRoot + 1, move.getType());
+                   
+            
             if(((white && eval >= maxEval) || (!white && eval <= minEval)) && distFromRoot == 0){
                 bestMove = move;
             }
             if(white){
                 maxEval = Math.max(maxEval, eval);
+                // alpha = Math.max(alpha, eval);
+                //  if(beta <= alpha && abp){
+                //     break;
+                // }
             }
             else{
-                minEval = Math.min(minEval, eval); 
+                minEval = Math.min(minEval, eval);
+                // beta = Math.min(beta, eval);
+                // if(beta <= alpha && abp){
+                //     break;
+                // }
             }
                     
         }
