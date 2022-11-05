@@ -80,16 +80,16 @@ public class Board {
              2, 3, 4, 5, 6, 4, 3, 2
         };
 
-            boardArray = new int[]{
-            0, 0, 0, 0, 5, 0, 0, 0,
-            0, 0, 0, 0, 0, 0,-1,-6,
-            0, 0, 0, 0, 0,-1, 3, 0,
-            0, 0, 0, 0, 0, 4, 0,-1,
-            0, 0, 0, 0, 6, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0
-        };
+        //     boardArray = new int[]{
+        //     0, 0, 0, 5, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0,-1,-6,
+        //     0, 0, 0, 0, 0,-1, 3, 0,
+        //     0, 0, 0, 0, 0, 4, 0,-1,
+        //     0, 0, 0, 0, 6, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0
+        // };
         //black at bottom start position
         // boardArray = new int[]{
         //      2, 3, 4, 6, 5, 4, 3, 2,
@@ -140,7 +140,7 @@ public class Board {
         createPieces();
         createSquares();
         boardState = new BoardState(boardArray, new boolean[]{true,true,true,true}, null);
-        white = new Comp(whitePieces, this, true, 2, false);
+        white = new Comp(whitePieces, this, true, 5, true);
         black = new Player(blackPieces, this, false, 4);
         moveHandler = new MoveHandler();
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
