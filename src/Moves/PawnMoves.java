@@ -1,15 +1,17 @@
 package Moves;
 
+import Board.BoardState;
 import Services.Values;
 
 public class PawnMoves extends PieceMoves{
 
     int upDirection = 0;
     @Override
-    public int[] find(int[] boardArray, int boardPos, int[] moves) {
-        this.boardArray = boardArray;
+    public int[] find(BoardState boardState, int boardPos, int[] moves) {
+        this.boardState = boardState;
         this.boardPos = boardPos;
         this.moves = moves;
+        this.boardArray = boardState.getBoardArray();
         upDirection = Values.upDirection(boardArray[boardPos]);
         pawnMoves();
         specialPawnMoves();

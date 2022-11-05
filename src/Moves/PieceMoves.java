@@ -1,5 +1,6 @@
 package Moves;
 
+import Board.BoardState;
 import Services.BoardCalculations;
 import Services.Values;
 
@@ -10,8 +11,9 @@ public class PieceMoves {
     int move;
     int[] directionIndex = new int[]{8,-8,-1,1,7,-7,9,-9};
     int[][] numSquaresToEdge = BoardCalculations.computeSquares();
-    
-    public int[] find(int[] boardArray, int boardPos, int[] moves) {
+    boolean[] castleInfo;
+    BoardState boardState;
+    public int[] find(BoardState boardState, int boardPos, int[] moves) {
         
         return moves;
 
@@ -39,7 +41,6 @@ public class PieceMoves {
     //multi space moves (rook/bishop/queen)
     //8 directions, [0-4] are straight [4-8] are diagonal
     public void slidingMoves(int direction, int directionEnd){
-        
         for(int i = direction; i < directionEnd ; i++){
             for(int j = 1; j <= numSquaresToEdge[boardPos][i]; j++){
                 move = boardPos + directionIndex[i] * j;

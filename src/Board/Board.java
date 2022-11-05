@@ -22,7 +22,7 @@ public class Board {
     List<Piece> allPieces;
     List<Piece> currentPieces = whitePieces;
     
-    int[] boardArray;
+    int[] boardArray = new int[64];
     MoveHandler moveHandler;
     Piece selectedPiece;
     Consumer<Square> paintSquares;
@@ -31,8 +31,8 @@ public class Board {
     Competitor white;
     int turn;
     int[] potentialSquares;
-    boolean editMode;
-    public Board(int turn, boolean editMode){
+    BoardState boardState;
+    public Board(int turn){
         /* 
             0 : empty
             1 : pawn
@@ -45,6 +45,8 @@ public class Board {
             + : white 
         */
         //set up board
+        
+        //blank board
         // boardArray = new int[]{
         //     0, 0, 0, 0, 0, 0, 0, 0,
         //     0, 0, 0, 0, 0, 0, 0, 0,
@@ -55,6 +57,18 @@ public class Board {
         //     0, 0, 0, 0, 0, 0, 0, 0,
         //     0, 0, 0, 0, 0, 0, 0, 0
         // };
+        // boardArray = new int[]{
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0,-6, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 6, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0
+        // };
+
+        //white at bottom start position
         boardArray = new int[]{
             -2,-3,-4,-5,-6,-4,-3,-2,
             -1,-1,-1,-1,-1,-1,-1,-1,
@@ -65,16 +79,40 @@ public class Board {
              1, 1, 1, 1, 1, 1, 1, 1,
              2, 3, 4, 5, 6, 4, 3, 2
         };
+
+        //     boardArray = new int[]{
+        //     0, 0, 0, 5, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0,-1,-6,
+        //     0, 0, 0, 0, 0,-1, 3, 0,
+        //     0, 0, 0, 0, 0, 4, 0,-1,
+        //     0, 0, 0, 0, 6, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0
+        // };
+        //black at bottom start position
         // boardArray = new int[]{
-        //      2, 3, 4, 5, 6, 4, 3, 2,
+        //      2, 3, 4, 6, 5, 4, 3, 2,
         //      1, 1, 1, 1, 1, 1, 1, 1,
         //      0, 0, 0, 0, 0, 0, 0, 0,
         //      0, 0, 0, 0, 0, 0, 0, 0,
         //      0, 0, 0, 0, 0, 0, 0, 0,
         //      0, 0, 0, 0, 0, 0, 0, 0,
         //      -1,-1,-1,-1,-1,-1,-1,-1,
-        //     -2,-3,-4,-5,-6,-4,-3,-2
+        //     -2,-3,-4,-6,-5,-4,-3,-2
         // };
+
+        // boardArray = new int[]{
+        //     -2, 0, 0, 0,-6, 0, 0,-2,
+        //     -1,-1,-1,-1,-1,-1,-1,-1,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      0, 0, 0, 0, 0, 0, 0, 0,
+        //      1, 1, 1, 1, 1, 1, 1, 1,
+        //      2, 0, 0, 0, 6, 0, 0, 2
+        // };
+
 
         // boardArray = new int[]{
         //     0, 0, 0,-2, 0,-4, 0,-6,
@@ -98,13 +136,13 @@ public class Board {
         //     2,3,4,0,6,4,3,2
         // };
         
-        moveHandler = new MoveHandler(boardArray, this);
-        this.editMode = editMode;
         this.turn = turn;
         createPieces();
         createSquares();
-        white = new Player(whitePieces, this, true, 4);
-        black = new Comp(blackPieces, this, false, 4);
+        boardState = new BoardState(boardArray, new boolean[]{true,true,true,true}, null);
+        white = new Comp(whitePieces, this, true, 5, true);
+        black = new Player(blackPieces, this, false, 4);
+        moveHandler = new MoveHandler();
         allPieces = Stream.concat(whitePieces.stream(), blackPieces.stream()).collect(Collectors.toList());;
     }
 
@@ -277,21 +315,47 @@ public class Board {
         }
     }
     //move piece from origin square to destination square, update visuals to reflect
-    public void move(int origin, int destination, int moveType, int[] inBoard){
-       
+    public void move(int origin, int destination, int moveType, BoardState inBoardState){
+        int[] inBoard = inBoardState.getBoardArray();
         int piece = inBoard[origin];
         if(moveType == 3){
             piece = 5 * piece;
         }
-        
+        if(moveType == 4){
+            int rookOrigin = origin + 3;
+            int rookDestination = origin + 1;
+            inBoard[rookDestination] = inBoard[rookOrigin];
+            inBoard[rookOrigin] = 0;
+            if(inBoardState == boardState){
+                updatePieces(rookOrigin, rookDestination, moveType);
+            }
+            
+        }
+        if(moveType == 5){
+            int rookOrigin = origin - 4;
+            int rookDestination = origin - 1;
+            inBoard[rookDestination] = inBoard[rookOrigin];
+            inBoard[rookOrigin] = 0;
+            if(inBoardState == boardState){
+                updatePieces(rookOrigin, rookDestination, moveType);
+            }
+            
+        }
+        if(Math.abs(piece) == 6 || Math.abs(piece) == 2){
+            castleUpdates(piece, origin, inBoardState);
+        }
         inBoard[destination] = piece;
         inBoard[origin] = 0;
 
-        if(inBoard == boardArray){
+        if(inBoardState == boardState){
             updatePieces(origin, destination, moveType);
             changeTurn();
         }
 
+    }
+
+    private void castleUpdates(int piece, int pos, BoardState inBoardState) {
+        inBoardState.setCastlingArray(piece, pos);
     }
 
     public void mousePressed(int x, int y) {

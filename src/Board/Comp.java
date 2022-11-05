@@ -6,6 +6,7 @@ import java.util.Random;
 import java.awt.Point;
 import Evaluation.BoardScore;
 import Moves.CheckFinder;
+import Moves.KingMoves;
 import Pieces.Piece;
 import Services.BoardCalculations;
 
@@ -13,24 +14,27 @@ public class Comp extends Competitor{
 
     boolean isWhite;
     int parentDepth;
-    public Comp(List<Piece> myPieces, Board board, boolean isWhite, int depth) {
+    boolean abp;
+    public Comp(List<Piece> myPieces, Board board, boolean isWhite, int depth, boolean abp) {
         super(myPieces, board);
         isPlayer = false;
         this.isWhite = isWhite;
         parentDepth = depth;
+        this.abp = abp;
     }
+    int moveCount;
     Piece selectedPiece;
     int totalMoves;
     List<Piece> myPiecesToCheck;
     
     public boolean findMove(){
-      totalMoves = 0;
-      Minimax(board.boardArray, parentDepth, isWhite, 0, 0);
-      System.out.println(totalMoves);
+      moveCount = 0;
+      Minimax(board.boardState,parentDepth, (int) Double.NEGATIVE_INFINITY , (int) Double.POSITIVE_INFINITY, isWhite, 0, 0);
+      System.out.println("Move Count: " + moveCount);
       if(bestMove == null){
         return false;
       }
-      board.move(bestMove.getOrigin(), bestMove.getDestination(), bestMove.getType(), board.boardArray);
+      board.move(bestMove.getOrigin(), bestMove.getDestination(), bestMove.getType(), board.boardState);
       
       return true;          
     }
@@ -42,18 +46,23 @@ public class Comp extends Competitor{
     Move bestMove;
     int[] currentPieceMoves;
     int[] currentBoard;
-    
-    public int Minimax(int[] currentBoard, int depth, boolean white, int distFromRoot, int parentMoveType){
+ 
+    public int Minimax(BoardState boardState, int depth, int alpha, int beta, boolean white, int distFromRoot, int parentMoveType){
+        currentBoard = boardState.getBoardArray();
         if(depth == 0){
             return BoardScore.calculate(currentBoard);
         }
-        
         int maxEval = (int) Double.NEGATIVE_INFINITY;
         int minEval = (int) Double.POSITIVE_INFINITY;
-        List<Move> moves = findMoves(currentBoard, white);
-        if(moves.isEmpty()){
-            List<Move> childMoves = findMoves(currentBoard, !white);
-            if(willCheck(childMoves)){
+
+        List<List<Move>> allMoves = findMoves(boardState, white);
+        List<Move> moves = allMoves.get(0);
+        List<Move> kingMoves = allMoves.get(1);
+        
+        if(kingMoves.isEmpty()){
+            List<Move> childMoves = findMoves(boardState, !white).get(0);
+            if(willCheck(childMoves) && moves.isEmpty()){
+                
                 if(white){
                     return (int) Double.NEGATIVE_INFINITY;
                 }
@@ -61,7 +70,7 @@ public class Comp extends Competitor{
                     return (int) Double.POSITIVE_INFINITY;
                 }
             }
-            else{
+            else if(moves.isEmpty()){
                 return 0;
             }
             
@@ -69,18 +78,32 @@ public class Comp extends Competitor{
         }
         for (Move move : moves) {
             // System.out.println(move + " node: " + distFromRoot);
-            int[] testBoard = currentBoard.clone();
-            board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoard);
-            int eval = Minimax(testBoard, depth - 1, !white, distFromRoot + 1, move.getType());
-            if(((white && eval >= maxEval) || (!white && eval <= minEval)) && distFromRoot == 0){
+            BoardState testBoardState = new BoardState(boardState);
+            int[] testBoard = testBoardState.getBoardArray();
+            board.move(move.getOrigin(), move.getDestination(), move.getType(), testBoardState);
+            
+            int eval = Minimax(testBoardState, depth - 1, alpha, beta, !white, distFromRoot + 1, move.getType());
+            if(((white && eval > maxEval) || (!white && eval < minEval)) && distFromRoot == 0){
+              
                 bestMove = move;
-            }
+            }       
+            
+
             if(white){
                 maxEval = Math.max(maxEval, eval);
+                alpha = Math.max(alpha, eval);
+                 if(beta <= alpha && abp){
+                    break;
+                }
             }
             else{
-                minEval = Math.min(minEval, eval); 
+                minEval = Math.min(minEval, eval);
+                beta = Math.min(beta, eval);
+                if(beta <= alpha && abp){
+                    break;
+                }
             }
+
                     
         }
         if(white){
@@ -94,24 +117,34 @@ public class Comp extends Competitor{
 
 
 
-    private List<Move> findMoves(int[] thisBoard, boolean white) {
+    private List<List<Move>> findMoves(BoardState thisBoardState, boolean white) {
         List<Move> moves = new ArrayList<Move>();
+        List<Move> kingMoves = new ArrayList<Move>();
+        int[] thisBoard = thisBoardState.getBoardArray();
         int[] pieceMoves;
         for(int i = 0; i < thisBoard.length; i++){
             if(thisBoard[i] != 0){
                 if((white && thisBoard[i] > 0) || (!white && thisBoard[i] < 0)){
-                    pieceMoves = board.moveHandler.findPieceMoves(i, thisBoard);
-                    CheckFinder.findMoves(pieceMoves, thisBoard, i);
+                    pieceMoves = board.moveHandler.findPieceMoves(i, thisBoardState);
+                    CheckFinder.findMoves(pieceMoves, thisBoardState, i);
                     for(int j = 0; j < pieceMoves.length; j++){
                         if(pieceMoves[j] > 0){       
                             totalMoves++;                   
                             moves.add(new Move(i, j, pieceMoves[j], thisBoard[i]));
+                            moveCount++;
+                            if(Math.abs(thisBoard[i]) == 6){
+                                kingMoves.add(new Move(i, j, pieceMoves[j], thisBoard[i]));
+                            }
                         }
+
                     }
                 }
             }
         }
-        return moves;
+        List<List<Move>> returnValue = new ArrayList<>();
+        returnValue.add(moves);
+        returnValue.add(kingMoves);
+        return returnValue;
     }
 
 
