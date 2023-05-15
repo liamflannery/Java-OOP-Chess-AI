@@ -2,9 +2,7 @@
 
 ![image](https://user-images.githubusercontent.com/55472933/200106919-83ca71f3-fce1-402d-94e4-239834093b86.png)
 
-
-
-
+[COMP3180 – Final Project Report.pdf](https://github.com/liamflannery/Java-OOP-Chess-AI/files/11473844/COMP3180.Final.Project.Report.pdf)
 
 ## Task Log
 https://important-alloy-399.notion.site/dbb6801f28ee48c28d7d58c5ac83a6b5?v=c054c5b8c80f4dd0b4f20162f0de4b85
